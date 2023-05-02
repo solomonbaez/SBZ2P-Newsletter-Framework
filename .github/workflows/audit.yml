@@ -6,6 +6,12 @@ on:
     paths:
       - 'production_rust/Cargo.toml'
       - 'production_rust/Cargo.lock'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'production_rust/Cargo.toml'
+      - 'production_rust/Cargo.lock'
 jobs:
   security_audit:
     runs-on: macos-latest
