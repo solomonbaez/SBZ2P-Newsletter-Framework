@@ -1,6 +1,9 @@
 name: Rust
 
-on: [push, pull_request]
+on: 
+  push:
+    paths:
+      - "**/production_rust"
 
 env:
   CARGO_TERM_COLOR: always
