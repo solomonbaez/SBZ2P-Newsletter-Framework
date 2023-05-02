@@ -1,11 +1,6 @@
 name: Security Audit
 on:
-  schedule:
-    - cron: '0 0 * * *'
   push:
-    branches:
-      - main
-  
     paths:
       - '**/production_rust/Cargo.toml'
       - '**/production_rust/Cargo.lock'
