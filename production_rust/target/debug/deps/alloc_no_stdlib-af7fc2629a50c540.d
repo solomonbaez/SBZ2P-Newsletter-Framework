@@ -1,0 +1,10 @@
+/Users/solomon/SBZ2P/production_rust/target/debug/deps/alloc_no_stdlib-af7fc2629a50c540.rmeta: /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/lib.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/allocated_memory/mod.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/allocated_memory/index_macro.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/stack_allocator.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/allocated_stack_memory.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/init.rs
+
+/Users/solomon/SBZ2P/production_rust/target/debug/deps/alloc_no_stdlib-af7fc2629a50c540.d: /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/lib.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/allocated_memory/mod.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/allocated_memory/index_macro.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/stack_allocator.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/allocated_stack_memory.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/init.rs
+
+/Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/lib.rs:
+/Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/allocated_memory/mod.rs:
+/Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/allocated_memory/index_macro.rs:
+/Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/stack_allocator.rs:
+/Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/allocated_stack_memory.rs:
+/Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/alloc-no-stdlib-2.0.4/src/init.rs:
