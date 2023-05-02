@@ -2,8 +2,11 @@ name: Rust
 
 on: 
   push:
+    branches:
+      - main
+    
     paths:
-      - "**/production_rust/**"
+      - "production_rust/**"
 
 env:
   CARGO_TERM_COLOR: always
