@@ -1,9 +1,11 @@
 name: Security Audit
 on:
   push:
+    branches:
+      - main
     paths:
-      - '**/production_rust/Cargo.toml'
-      - '**/production_rust/Cargo.lock'
+      - 'production_rust/Cargo.toml'
+      - 'production_rust/Cargo.lock'
 jobs:
   security_audit:
     runs-on: macos-latest
