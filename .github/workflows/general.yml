@@ -4,9 +4,14 @@ on:
   push:
     branches:
       - main
-    
     paths:
-      - "production_rust/**"
+      - 'production_rust/**'
+  
+  pull_request:
+    branches:
+      - main
+    paths: 
+      - 'production_rust/**'
 
 env:
   CARGO_TERM_COLOR: always
@@ -20,6 +25,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - name: Run tests
+        working-directory: production_rust
         run: cargo test
 
   fmt:
@@ -31,6 +37,7 @@ jobs:
         with:
           components: rustfmt
       - name: Enforce formatting
+        working-directory: production_rust
         run: cargo fmt --check
 
   clippy:
@@ -43,4 +50,5 @@ jobs:
           components: clippy
       - uses: Swatinem/rust-cache@v2
       - name: Linting
+        working-directory: production_rust
         run: cargo clippy -- -D warnings
