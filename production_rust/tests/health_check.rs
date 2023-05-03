@@ -4,7 +4,7 @@ fn spawn_app() -> String {
     let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind random port.");
     let port = listener.local_addr().unwrap().port();
 
-    let server = production_rust::run(listener).expect("Failed to bind address.");
+    let server = production_rust::startup::run(listener).expect("Failed to bind address.");
 
     let _ = tokio::spawn(server);
     // inform the caller of the application address
