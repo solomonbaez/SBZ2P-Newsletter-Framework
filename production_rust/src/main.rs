@@ -7,7 +7,7 @@ async fn main() -> Result<(), std::io::Error> {
     let port = listener.local_addr().unwrap().port();
     println!(
         "\n{}",
-        format!("Running Server -- http://127.0.0.1:{}", port)
+        format_args!("Running Server -- http://127.0.0.1:{}", port)
     );
 
     run(listener)?.await
