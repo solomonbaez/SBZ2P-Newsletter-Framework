@@ -1,10 +1,14 @@
 use production_rust::configuration::get_configuration;
 use production_rust::startup::run;
+use sqlx::PgPool;
 use std::net::TcpListener;
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
     let config = get_configuration().expect("Failed to read configuration");
+    let connection_pool = PgPool::connect(&config.database.connection_string())
+        .await
+        .expect("Failed to connect to Postgres.");
 
     let address = format!("127.0.0.1:{}", config.application_port);
     let listener = TcpListener::bind(address)?;
@@ -16,5 +20,5 @@ async fn main() -> Result<(), std::io::Error> {
         )
     );
 
-    run(listener)?.await
+    run(listener, connection_pool)?.await
 }

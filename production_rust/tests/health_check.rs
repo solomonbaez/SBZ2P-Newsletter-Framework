@@ -1,5 +1,5 @@
 use production_rust::configuration::get_configuration;
-use sqlx::{PgConnection, Connection};
+use sqlx::{Connection, PgConnection};
 use std::net::TcpListener;
 
 fn spawn_app() -> String {
@@ -31,14 +31,13 @@ async fn health_check_confirm() {
 #[tokio::test] // valid form data returns 200
 async fn subscribe_returns_200() {
     let app_address = spawn_app();
-    let config = get_configuration()
-        .expect("Failed to read configuration");
+    let config = get_configuration().expect("Failed to read configuration");
     let connection_string = config.database.connection_string();
-    
+
     let mut connection = PgConnection::connect(&connection_string)
         .await
         .expect("Failed to connect to Postgres.");
-    
+
     let client = reqwest::Client::new();
 
     let body = "name=Ferrus%20Manus&email=ferrum_morgulus%40gmail.com";
