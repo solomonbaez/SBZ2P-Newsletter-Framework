@@ -41,6 +41,13 @@ jobs:
         with:
           key: sqlx-${{ env.SQLX_VERSION }}
           
+      - name: Install Docker
+        run: |
+          brew doctor
+          brew update
+          brew install docker
+          brew services start docker
+          
       - name: Install sqlx-cli
         working-directory: production_rust
         run:
@@ -49,13 +56,6 @@ jobs:
           --features ${{ env.SQLX_FEATURES }}
           --no-default-features
           --locked
-          
-      - name: Install Docker
-        run: |
-          brew doctor
-          brew update
-          brew install docker
-          brew services start docker
           
       - name: Install postgresql-client
         run: |
