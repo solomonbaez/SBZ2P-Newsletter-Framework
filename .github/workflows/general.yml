@@ -50,8 +50,13 @@ jobs:
           --no-default-features
           --locked
           
+      - name: Install Docker
+        run: |
+          brew install docker
+          brew services start docker
+          
       - name: Install postgresql-client
-        run: sudo apt-get update && sudo apt-get install postgresql-client-y
+        run: brew install libpq
         
       - name: Migrate database
         run: SKIP_DOCKER=true ./scripts/init_db.sh
