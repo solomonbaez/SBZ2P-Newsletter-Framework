@@ -52,11 +52,17 @@ jobs:
           
       - name: Install Docker
         run: |
+          brew doctor
+          brew update
           brew install docker
           brew services start docker
           
       - name: Install postgresql-client
-        run: brew install libpq
+        run: |
+          brew doctor
+          brew update
+          brew install libpq
+          brew link --force libpq
         
       - name: Migrate database
         run: SKIP_DOCKER=true ./scripts/init_db.sh
