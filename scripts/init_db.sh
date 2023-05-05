@@ -19,7 +19,7 @@ fi
 # check user settings
 DB_USER="${POSTGRES_USER:=postgres}"
 DB_PASSWORD="${POSTGRES_PASSWORD:=ultima}"
-DB_NAME="${POSTGRES_DB:=ultima}"
+DB_NAME="${POSTGRES_DB:=newsletter}"
 DB_PORT="${POSTGRES_PORT:=5432}"
 DB_HOST="${POSTGRES_HOST:=localhost}"
 
