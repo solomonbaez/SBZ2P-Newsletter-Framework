@@ -18,7 +18,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  SQLX_VERSION: 0.6
+  SQLX_VERSION: ~0.6
   SQLX_FEATURES: "rustls,postgres"
 
 jobs:
