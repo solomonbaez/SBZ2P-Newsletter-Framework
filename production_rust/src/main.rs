@@ -6,7 +6,7 @@ use std::net::TcpListener;
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
-    let subscriber = get_subscriber("production_rust".into(), "info".into());
+    let subscriber = get_subscriber("production_rust".into(), "info".into(), std::io::stdout);
 
     init_subscriber(subscriber);
 
