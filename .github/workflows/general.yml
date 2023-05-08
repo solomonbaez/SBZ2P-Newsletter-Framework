@@ -57,6 +57,9 @@ jobs:
         
       - name: Migrate database
         run: SKIP_DOCKER=true ./scripts/init_db.sh
+      
+      - name: Verify SQLX Offline-mode
+        run: cargo sqlx prepare --check -- --bin production_rust
           
       - name: Run tests
         working-directory: production_rust
