@@ -2,7 +2,7 @@ use production_rust::configuration::get_configuration;
 use production_rust::startup::run;
 use production_rust::telemetry::{get_subscriber, init_subscriber};
 use secrecy::ExposeSecret;
-use sqlx::PgPool;
+use sqlx::postgres::PgPoolOptions;
 use std::net::TcpListener;
 
 #[tokio::main]
@@ -12,8 +12,10 @@ async fn main() -> Result<(), std::io::Error> {
     init_subscriber(subscriber);
 
     let config = get_configuration().expect("Failed to read configuration");
-    let connection_pool = PgPool::connect_lazy(config.database.connection_string().expose_secret())
-        .expect("Failed to connect to Postgres.");
+    let connection_pool = PgPoolOptions::new()
+        .acquire_timeout(std::time::Duration::from_secs(1))
+        .connect_lazy(config.database.connection_string().expose_secret())
+        .expect("Failed to create Postgres connection pool.");
 
     let address = format!("{}:{}", config.application.host, config.application.port);
     let listener = TcpListener::bind(address)?;
