@@ -1,0 +1,10 @@
+/Users/solomon/SBZ2P/production_rust/target/release/deps/tracing_bunyan_formatter-f05adc293c36faca.rmeta: /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/lib.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/formatting_layer.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/storage_layer.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/../README.md
+
+/Users/solomon/SBZ2P/production_rust/target/release/deps/libtracing_bunyan_formatter-f05adc293c36faca.rlib: /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/lib.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/formatting_layer.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/storage_layer.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/../README.md
+
+/Users/solomon/SBZ2P/production_rust/target/release/deps/tracing_bunyan_formatter-f05adc293c36faca.d: /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/lib.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/formatting_layer.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/storage_layer.rs /Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/../README.md
+
+/Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/lib.rs:
+/Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/formatting_layer.rs:
+/Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/storage_layer.rs:
+/Users/solomon/.cargo/registry/src/github.com-1ecc6299db9ec823/tracing-bunyan-formatter-0.3.7/src/../README.md:
