@@ -1,0 +1,17 @@
+name: z2pnewsletter
+region: nyc1
+services:
+  - name: z2pnewsletter 
+    dockerfile_path: Dockerfile
+    source_dir: .
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: solomonbaez/SBZ2P_Newsletter_Framework
+    health_check:
+      http_path: /health_check
+    http_port: 8000
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
