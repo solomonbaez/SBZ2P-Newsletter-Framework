@@ -59,7 +59,8 @@ jobs:
         run: SKIP_DOCKER=true ./scripts/init_db.sh
       
       - name: Verify SQLX Offline-mode
-        run: cargo sqlx prepare --database-url env.DATABASE_URL --check -- --bin production_rust
+        working-directory: production_rust
+        run: cargo sqlx prepare --check -- --bin production_rust
           
       - name: Run tests
         working-directory: production_rust
