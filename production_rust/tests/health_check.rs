@@ -112,7 +112,7 @@ async fn subscribe_returns_200() {
 }
 
 #[tokio::test]
-async fn subscribe_returns_200_with_empty_fields() {
+async fn subscribe_returns_400_with_empty_fields() {
     let app = spawn_app().await;
     let client = reqwest::Client::new();
 
@@ -132,9 +132,9 @@ async fn subscribe_returns_200_with_empty_fields() {
             .expect("Failed to execute request.");
 
         assert_eq!(
-            200,
+            400,
             response.status().as_u16(),
-            "The API did not return 200 OK with {}.",
+            "The API did not return with 400: {}.",
             error_message,
         );
     }
