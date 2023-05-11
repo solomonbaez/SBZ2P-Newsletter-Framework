@@ -1,12 +1,10 @@
 #! spec.yaml
 name: suzerain
-region: nyc3
+region: nyc1
 
 services:
   - name: suzerain
-    image: 
-      registry_type: DOCR
-      repository: suzerain
+
     dockerfile_path: production_rust/Dockerfile
     
     source_dir: .
