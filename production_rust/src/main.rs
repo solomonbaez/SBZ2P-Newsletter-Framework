@@ -1,4 +1,5 @@
 use production_rust::configuration::get_configuration;
+use production_rust::email_client::EmailClient;
 use production_rust::startup::run;
 use production_rust::telemetry::{get_subscriber, init_subscriber};
 use sqlx::postgres::PgPoolOptions;
@@ -15,6 +16,12 @@ async fn main() -> Result<(), std::io::Error> {
         .acquire_timeout(std::time::Duration::from_secs(1))
         .connect_lazy_with(config.database.with_db());
 
+    let sender_email = config
+        .email_client
+        .sender()
+        .expect("Invalid email address.");
+    let email_client = EmailClient::new(config.email_client.base_url, sender_email);
+
     let address = format!("{}:{}", config.application.host, config.application.port);
     let listener = TcpListener::bind(address)?;
     println!(
@@ -25,5 +32,6 @@ async fn main() -> Result<(), std::io::Error> {
         )
     );
 
-    run(listener, connection_pool)?.await
+    run(listener, connection_pool, email_client)?.await?;
+    Ok(())
 }
