@@ -10,3 +10,4 @@ email_client:
   base_url: "localhost"
   sender_email: "test@gmail.com"
   auth_token: "gloria-invigilata"
+  timeout_milliseconds: 10000
