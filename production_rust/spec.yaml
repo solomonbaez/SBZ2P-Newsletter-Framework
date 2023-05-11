@@ -1,10 +1,12 @@
 #! spec.yaml
-name: z2pnewsletter
-region: nyc1
+name: suzerain
+region: nyc3
 
 services:
-  - name: z2pnewsletter 
-    
+  - name: suzerain
+    image: 
+      registry_type: DOCR
+      repository: suzerain
     dockerfile_path: production_rust/Dockerfile
     
     source_dir: .
