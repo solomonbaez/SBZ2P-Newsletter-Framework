@@ -7,7 +7,7 @@ services:
 
     dockerfile_path: production_rust/Dockerfile
     
-    source_dir: .
+    source_dir: production_rust
     
     github:
       branch: main
