@@ -1,9 +1,18 @@
 use crate::helpers::spawn_app;
+use wiremock::matchers::{method, path};
+use wiremock::{Mock, ResponseTemplate};
+
 #[tokio::test] // valid form data returns 200
-async fn subscribe_returns_200() {
+async fn valid_subscribe_returns_200() {
     let app = spawn_app().await; // Future
 
     let body = "name=Aeonid%20Thiel&email=calth_invigilatus%40gmail.com";
+
+    Mock::given(path("/email"))
+        .and(method("POST"))
+        .respond_with(ResponseTemplate::new(200))
+        .mount(&app.email_server)
+        .await;
 
     let response = app.post_subscribers(body.into()).await;
 
@@ -20,7 +29,7 @@ async fn subscribe_returns_200() {
 }
 
 #[tokio::test]
-async fn subscribe_returns_400_with_empty_fields() {
+async fn invalid_subscribe_returns_400_empty_fields() {
     let app = spawn_app().await;
 
     let test_cases = vec![
@@ -42,12 +51,12 @@ async fn subscribe_returns_400_with_empty_fields() {
 }
 
 #[tokio::test] // Parametrized Test: missing form data returns 400
-async fn subscribe_returns_400() {
+async fn invald_subscribe_returns_400_missing_data() {
     let app = spawn_app().await; // Future
 
     let test_cases = vec![
         ("name=Aeonid%20Thiel", "Missing the email."),
-        ("email=calth_invigilas%40gmail.com", "Missing the name."),
+        ("email=calth_invigilata%40gmail.com", "Missing the name."),
         ("", "Missing both fields."),
     ];
 
@@ -61,4 +70,20 @@ async fn subscribe_returns_400() {
             error_message
         );
     }
+}
+
+#[tokio::test]
+async fn valid_subscribe_sends_confirmation_email() {
+    let app = spawn_app().await;
+
+    let body = "name=Aeonid%20Thiel&&email=calth_invigilata%40gmail.com";
+
+    Mock::given(path("/email"))
+        .and(method("POST"))
+        .respond_with(ResponseTemplate::new(200))
+        .expect(1)
+        .mount(&app.email_server)
+        .await;
+
+    app.post_subscribers(body.into()).await;
 }
