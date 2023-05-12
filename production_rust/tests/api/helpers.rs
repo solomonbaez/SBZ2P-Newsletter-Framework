@@ -1,9 +1,8 @@
 use once_cell::sync::Lazy;
 use production_rust::configuration::{get_configuration, DatabaseSettings};
-use production_rust::email_client::EmailClient;
+use production_rust::startup::{get_connection_pool, Application};
 use production_rust::telemetry::{get_subscriber, init_subscriber};
 use sqlx::{Connection, Executor, PgConnection, PgPool};
-use std::net::TcpListener;
 use uuid::Uuid;
 
 static TRACING: Lazy<()> = Lazy::new(|| {
@@ -27,36 +26,25 @@ pub struct TestApp {
 pub async fn spawn_app() -> TestApp {
     Lazy::force(&TRACING);
 
-    let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind random port.");
-    let port = listener.local_addr().unwrap().port();
-    let address = format!("http://127.0.0.1:{}", port);
+    let config = {
+        let mut c = get_configuration().expect("Failed to load configuration.");
+        c.database.database_name = Uuid::new_v4().to_string();
+        c.application.port = 0;
+        c
+    };
 
-    let mut config = get_configuration().expect("Failed to read configuration.");
-    config.database.database_name = Uuid::new_v4().to_string();
-    // println!("{}", config.database.database_name);
+    test_database(&config.database).await;
 
-    let connection_pool = test_database(&config.database).await;
-    let sender_email = config
-        .email_client
-        .sender()
-        .expect("Invalid email address.");
+    let application = Application::build(config.clone())
+        .await
+        .expect("Failed to build application.");
+    let address = format!("http://127.0.0.1:{}", application.port());
 
-    let timeout = config.email_client.timeout();
-    let email_client = EmailClient::new(
-        config.email_client.base_url,
-        sender_email,
-        config.email_client.auth_token,
-        timeout,
-    );
-
-    let server = production_rust::startup::run(listener, connection_pool.clone(), email_client)
-        .expect("Failed to bind address.");
-
-    let _ = tokio::spawn(server);
+    let _ = tokio::spawn(application.run_until_stopped());
 
     TestApp {
-        address: address,
-        pg_pool: connection_pool,
+        address,
+        pg_pool: get_connection_pool(&config.database),
     }
 }
 
