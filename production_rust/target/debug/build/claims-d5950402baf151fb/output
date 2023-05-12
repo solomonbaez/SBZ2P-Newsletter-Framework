@@ -1,3 +1,0 @@
-cargo:rustc-cfg=has_task_poll
-cargo:rustc-cfg=rustc_1_6
-cargo:rustc-cfg=rustc_1_26
