@@ -106,7 +106,7 @@ mod tests {
         EmailClient::new(
             base_url,
             subscriber_email(),
-            Secret::new(Faker.fake()), 
+            Secret::new(Faker.fake()),
             std::time::Duration::from_millis(200),
         )
     }
