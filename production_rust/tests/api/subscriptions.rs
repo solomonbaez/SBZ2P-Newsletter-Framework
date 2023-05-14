@@ -25,13 +25,13 @@ async fn valid_subscriber_persists() {
 
     let body = "name=Aeonid%20Thiel&email=calth_invigilatus%40gmail.com";
 
-    app.post_subscribers(body.into()).await;
-
     Mock::given(path("/email"))
         .and(method("POST"))
         .respond_with(ResponseTemplate::new(200))
         .mount(&app.email_server)
         .await;
+
+    app.post_subscribers(body.into()).await;
 
     let saved = sqlx::query!("SELECT email, name, status FROM subscriptions")
         .fetch_one(&app.pg_pool)
