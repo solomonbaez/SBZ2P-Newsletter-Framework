@@ -25,6 +25,7 @@ tracing-bunyan-formatter = "0.3"
 secrecy = { version = "0.8", features = ["serde"] }
 unicode-segmentation = "1"
 validator = "0.16"
+rand = { version = "0.8", features = ["std_rng"] }
 config = "0.13"
 
 [dependencies.sqlx]
