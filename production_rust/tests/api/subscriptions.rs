@@ -131,7 +131,7 @@ async fn subscribe_fails_with_fatal_database_error() {
 
     let body = "name=Aeonid%20Thiel&&email=calth_invigilata%40gmail.com";
 
-    sqlx::query!("ALTER TABLE subscription_tokens DROP COLUMN subscription_token;",)
+    sqlx::query!("ALTER TABLE subscriptions DROP COLUMN email;",)
         .execute(&app.pg_pool)
         .await
         .unwrap();
