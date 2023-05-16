@@ -21,12 +21,7 @@ async fn newsletters_unavailable_for_unconfirmed_subscribers() {
         }
     });
 
-    let response = reqwest::Client::new()
-        .post(&format!("{}/newsletters", &app.address))
-        .json(&newsletter_request_body)
-        .send()
-        .await
-        .expect("Failed to execute request.");
+    let response = app.post_newsletter(newsletter_request_body).await;
 
     assert_eq!(response.status().as_u16(), 200);
 }
@@ -39,7 +34,7 @@ async fn newsletters_available_for_confirmed_subscribers() {
     Mock::given(path("/email"))
         .and(method("POST"))
         .respond_with(ResponseTemplate::new(200))
-        .expect(0)
+        .expect(1)
         .mount(&app.email_server)
         .await;
 
@@ -51,12 +46,7 @@ async fn newsletters_available_for_confirmed_subscribers() {
         }
     });
 
-    let response = reqwest::Client::new()
-        .post(&format!("{}/newsletters", &app.address))
-        .json(&newsletter_request_body)
-        .send()
-        .await
-        .expect("Failed to send newsletter.");
+    let response = app.post_newsletter(newsletter_request_body).await;
 
     assert_eq!(response.status().as_u16(), 200);
 }
@@ -116,13 +106,7 @@ async fn invalid_newsletter_returns_400() {
     ];
 
     for (invalid_body, error_message) in test_cases {
-        let response = reqwest::Client::new()
-            .post(&format!("{}/newsletters", &app.address))
-            .json(&invalid_body)
-            .send()
-            .await
-            .expect("Failed to execute request.");
-
+        let response = app.post_newsletter(invalid_body).await;
         assert_eq!(
             400,
             response.status().as_u16(),
