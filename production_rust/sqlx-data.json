@@ -25,24 +25,6 @@
     },
     "query": "UPDATE subscriptions SET status = 'confirmed' WHERE id = $1"
   },
-  "aa0445c107513863945f43341831ed03e685a19e5e1f2db7b8f9dee37643bd80": {
-    "describe": {
-      "columns": [
-        {
-          "name": "email",
-          "ordinal": 0,
-          "type_info": "Text"
-        }
-      ],
-      "nullable": [
-        false
-      ],
-      "parameters": {
-        "Left": []
-      }
-    },
-    "query": "\n        SELECT email FROM subscriptions WHERE status = 'confirmed'\n        "
-  },
   "ad120337ee606be7b8d87238e2bb765d0da8ee61b1a3bc142414c4305ec5e17f": {
     "describe": {
       "columns": [
@@ -62,6 +44,24 @@
       }
     },
     "query": "SELECT subscriber_id FROM subscription_tokens WHERE subscription_token = $1"
+  },
+  "d5d16dbfb815b118b66a4a59a8c4861511fd0702ccf06cda56e13a3fabcb0f7f": {
+    "describe": {
+      "columns": [
+        {
+          "name": "email",
+          "ordinal": 0,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "\n            SELECT email FROM subscriptions WHERE status = 'confirmed'\n            "
   },
   "e6822c9e162eabc20338cc27d51a8e80578803ec1589c234d93c3919d14a96a6": {
     "describe": {
