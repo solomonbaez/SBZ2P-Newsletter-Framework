@@ -1,6 +1,6 @@
 {
   "db": "PostgreSQL",
-  "3ce033fc8a24367a3e399e3458c8e25ea928fa65d033e9349a710cabbd976817": {
+  "3c9313d38451501e5880ef3d5946d19a37cc4607bc741ff73d3b70994ef1baac": {
     "describe": {
       "columns": [
         {
@@ -19,7 +19,7 @@
         ]
       }
     },
-    "query": "\n        SELECT user_id FROM users\n        WHERE username = $1 AND password = $2\n        "
+    "query": "\n        SELECT user_id FROM users\n        WHERE username = $1 AND password_hash = $2\n        "
   },
   "49d67b84bb628271975ed9f0820e1710cec3f46db570f86150180d33702cad6c": {
     "describe": {
