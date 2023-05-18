@@ -1,8 +1,9 @@
+use argon2::password_hash::SaltString;
+use argon2::{Argon2, PasswordHasher};
 use once_cell::sync::Lazy;
 use production_rust::configuration::{get_configuration, DatabaseSettings};
 use production_rust::startup::{get_connection_pool, Application};
 use production_rust::telemetry::{get_subscriber, init_subscriber};
-use sha3::Digest;
 use sqlx::{Connection, Executor, PgConnection, PgPool};
 use uuid::Uuid;
 use wiremock::MockServer;
@@ -95,8 +96,11 @@ impl TestUser {
     }
 
     async fn store(&self, connection_pool: &PgPool) {
-        let password_hash = sha3::Sha3_256::digest(self.password.as_bytes());
-        let password_hash = format!("{:x}", password_hash);
+        let salt = SaltString::generate(&mut rand::thread_rng());
+        let password_hash = Argon2::default()
+            .hash_password(self.password.as_bytes(), &salt)
+            .unwrap()
+            .to_string();
 
         sqlx::query!(
             "INSERT INTO users (user_id, username, password_hash)
