@@ -27,6 +27,9 @@ secrecy = { version = "0.8", features = ["serde"] }
 unicode-segmentation = "1"
 validator = "0.16"
 urlencoding = "2"
+htmlescape = "0.3"
+hmac = { version = "0.12", features = ["std"] }
+sha2 = "0.10"
 rand = { version = "0.8", features = ["std_rng"] }
 thiserror = "1"
 anyhow = "1"
