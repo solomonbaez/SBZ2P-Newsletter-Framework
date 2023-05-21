@@ -1,5 +1,6 @@
 application:
   port: 8000
+  hmac_secret: "long-encrypted-secret-key-for-message-verification-integrity"
 database:
   host: "localhost"
   port: 5432
