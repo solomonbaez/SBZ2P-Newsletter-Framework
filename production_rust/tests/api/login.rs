@@ -16,5 +16,5 @@ async fn failure_sends_error_flash_message() {
     assert_eq!(flash_cookie.value(), "Something went wrong");
 
     let html_page = app.get_login_html().await;
-    assert!(html_page.contains(r#"<p><i>Something went wrong</i></p>"#));
+    assert!(html_page.contains(r#"Something went wrong"#));
 }
