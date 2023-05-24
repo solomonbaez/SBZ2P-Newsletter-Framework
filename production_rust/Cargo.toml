@@ -13,6 +13,7 @@ name = "production_rust"
 [dependencies]
 argon2 = { version = "0.4", features = ["std"] }
 actix-web = "4"
+actix-session = { version = "0.7", features = ["redis-rs-tls-session"] }
 actix-web-flash-messages = { version = "0.4", features = ["cookies"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 serde = { version = "1", features = ["derive"] }

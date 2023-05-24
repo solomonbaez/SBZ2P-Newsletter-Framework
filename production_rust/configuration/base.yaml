@@ -12,3 +12,4 @@ email_client:
   sender_email: "test@gmail.com"
   auth_token: "gloria-invigilata"
   timeout_milliseconds: 10000
+redis_uri: "redis://127.0.0.1:6379"
