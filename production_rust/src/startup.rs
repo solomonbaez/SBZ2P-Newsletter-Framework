@@ -3,10 +3,13 @@ use crate::email_client::EmailClient;
 use crate::routes::{
     confirm, health_check, home, login, login_form, publish_newsletter, subscribe,
 };
+use actix_web::cookie::Key;
 use actix_web::dev::Server;
 use actix_web::web::Data;
 use actix_web::{web, App, HttpServer};
-use secrecy::Secret;
+use actix_web_flash_messages::storage::CookieMessageStore;
+use actix_web_flash_messages::FlashMessagesFramework;
+use secrecy::{ExposeSecret, Secret};
 use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
 use std::net::TcpListener;
@@ -41,7 +44,7 @@ impl Application {
         );
 
         let address = format!("{}:{}", config.application.host, config.application.port);
-        let listener = TcpListener::bind(address)?;
+        let listener = TcpListener::bind(address).expect("Failed to bind tcp");
         let port = listener.local_addr().unwrap().port();
         let server = run(
             listener,
@@ -49,7 +52,8 @@ impl Application {
             email_client,
             config.application.base_url,
             config.application.hmac_secret,
-        )?;
+        )
+        .expect("Failed to wrap cookies");
 
         println!(
             "\n{}\n",
@@ -85,8 +89,13 @@ fn run(
     let email_client = web::Data::new(email_client);
     let base_url = web::Data::new(ApplicationBaseUrl(base_url));
 
+    let message_store =
+        CookieMessageStore::builder(Key::from(hmac_secret.expose_secret().as_bytes())).build();
+    let message_framework = FlashMessagesFramework::builder(message_store).build();
+
     let server = HttpServer::new(move || {
         App::new()
+            .wrap(message_framework.clone())
             .wrap(TracingLogger::default())
             .route("/health_check", web::get().to(health_check))
             .route("/subscriptions", web::post().to(subscribe))
@@ -100,7 +109,8 @@ fn run(
             .app_data(base_url.clone())
             .app_data(Data::new(HmacSecret(hmac_secret.clone())))
     })
-    .listen(listener)?
+    .listen(listener)
+    .expect("Failed to wrap message framework")
     .run();
     Ok(server)
 }

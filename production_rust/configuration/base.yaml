@@ -1,6 +1,6 @@
 application:
   port: 8000
-  hmac_secret: "long-encrypted-secret-key-for-message-verification-integrity"
+  hmac_secret: "they-werent-men-they-were-wolves-a-fully-enslaved-process-at-the-end-of-time-comfort" 
 database:
   host: "localhost"
   port: 5432
