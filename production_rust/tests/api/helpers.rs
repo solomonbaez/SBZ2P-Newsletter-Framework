@@ -107,7 +107,7 @@ impl TestApp {
     //     self.api_client
     //         .get(&format!("{}/login", &self.address))
     //         .send()
-    //         .await()
+    //         .await
     //         .expect("Failed to execute request.")
     //         .text()
     //         .await
