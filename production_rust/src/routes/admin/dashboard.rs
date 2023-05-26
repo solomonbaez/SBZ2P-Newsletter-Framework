@@ -1,5 +1,5 @@
 use crate::session_state::TypedSession;
-use actix_web::http::header::ContentType;
+use actix_web::http::header::{ContentType, LOCATION};
 use actix_web::{web, HttpResponse};
 use anyhow::Context;
 use sqlx::PgPool;
@@ -14,7 +14,9 @@ pub async fn admin_dashboard(
             .await
             .map_err(e500)?
     } else {
-        todo!()
+        return Ok(HttpResponse::SeeOther()
+            .insert_header((LOCATION, "/login"))
+            .finish());
     };
     Ok(HttpResponse::Ok()
         .content_type(ContentType::html())
