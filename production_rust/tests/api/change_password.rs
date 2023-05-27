@@ -48,9 +48,9 @@ async fn new_password_fields_must_match() {
         .await;
     assert_is_redirect_to(&response, "/admin/password");
 
-    // let html_page = app.get_change_password_html().await;
-    // assert!(html_page.contains(
-    //     "<p><i>You entered two different new passwords - \
-    //     the field values must match.</i></p>"
-    // ));
+    let html_page = app.get_change_password_html().await;
+    assert!(html_page.contains(
+        "<p><i>Two different passwords entered - \
+        the field values must match.</i></p>"
+    ));
 }

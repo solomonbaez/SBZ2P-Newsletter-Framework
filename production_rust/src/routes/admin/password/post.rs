@@ -1,6 +1,7 @@
 use crate::session_state::TypedSession;
 use crate::utils::{e500, see_other};
 use actix_web::{web, HttpResponse};
+use actix_web_flash_messages::FlashMessage;
 use secrecy::{ExposeSecret, Secret};
 
 #[allow(dead_code)]
@@ -20,6 +21,8 @@ pub async fn change_password(
     };
 
     if form.new_password.expose_secret() != form.new_password_check.expose_secret() {
+        FlashMessage::error("Two different passwords entered - the field values must match.")
+            .send();
         return Ok(see_other("/admin/password"));
     }
     todo!()
