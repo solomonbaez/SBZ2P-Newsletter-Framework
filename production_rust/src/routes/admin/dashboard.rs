@@ -40,7 +40,10 @@ pub async fn admin_dashboard(
 }
 
 #[tracing::instrument(name = "Get username", skip(connection_pool))]
-async fn get_username(user_id: Uuid, connection_pool: &PgPool) -> Result<String, anyhow::Error> {
+pub async fn get_username(
+    user_id: Uuid,
+    connection_pool: &PgPool,
+) -> Result<String, anyhow::Error> {
     let row = sqlx::query!(
         r#"
         SELECT username FROM users WHERE user_id = $1
