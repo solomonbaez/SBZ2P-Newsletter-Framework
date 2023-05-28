@@ -1,16 +1,16 @@
 use crate::session_state::TypedSession;
 use crate::utils::{e500, see_other};
-use actix_web_lab::middleware::Next;
 use actix_web::body::MessageBody;
 use actix_web::dev::{ServiceRequest, ServiceResponse};
-use actix_web::{FromRequest, HttpMessage};
 use actix_web::error::InternalError;
-use uuid::Uuid;
+use actix_web::{FromRequest, HttpMessage};
+use actix_web_lab::middleware::Next;
 use std::ops::Deref;
+use uuid::Uuid;
 
 pub async fn reject_anonymous_users(
     mut req: ServiceRequest,
-    next: Next<impl MessageBody>
+    next: Next<impl MessageBody>,
 ) -> Result<ServiceResponse<impl MessageBody>, actix_web::Error> {
     let session = {
         let (http_request, payload) = req.parts_mut();
@@ -46,4 +46,3 @@ impl Deref for UserId {
         &self.0
     }
 }
-

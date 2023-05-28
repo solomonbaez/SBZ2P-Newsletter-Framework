@@ -1,6 +1,4 @@
-use crate::authentication::{
-    validate_credentials, AuthError, Credentials, UserId
-};
+use crate::authentication::{validate_credentials, AuthError, Credentials, UserId};
 use crate::routes::admin::dashboard::get_username;
 use crate::utils::{e500, see_other};
 use actix_web::{web, HttpResponse};
@@ -19,7 +17,7 @@ pub struct FormData {
 pub async fn change_password(
     form: web::Form<FormData>,
     connection_pool: web::Data<PgPool>,
-    user_id: web::ReqData<UserId>
+    user_id: web::ReqData<UserId>,
 ) -> Result<HttpResponse, actix_web::Error> {
     let user_id = user_id.into_inner();
     // if user_id.is_none() {
