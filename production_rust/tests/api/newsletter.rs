@@ -53,6 +53,28 @@ async fn newsletters_available_for_confirmed_subscribers() {
     assert!(html_page.contains("<p><i>The newsletter issue has been published.</i></p>"));
 }
 
+#[tokio::test]
+async fn login_required_to_see_newsletter_form() {
+    let app = spawn_app().await;
+
+    let response = app.get_publish_newsletter().await;
+    assert_is_redirect_to(&response, "/login")
+}
+
+#[tokio::test]
+async fn login_required_to_publish_newsletter() {
+    let app = spawn_app().await;
+
+    let newsletter_request_body = serde_json::json!({
+        "title": "Newsletter title",
+        "text_content": "Newsletter body as text",
+        "html_content": "<p>Newsletter body as html</p>",
+    });
+
+    let response = app.post_publish_newsletter(&newsletter_request_body).await;
+    assert_is_redirect_to(&response, "/login");
+}
+
 async fn create_unconfirmed_subscriber(app: &TestApp) -> ConfirmationLinks {
     let body = "name=Remus%20Ventanus&email=savior_of_calth%40gmail.com";
 
