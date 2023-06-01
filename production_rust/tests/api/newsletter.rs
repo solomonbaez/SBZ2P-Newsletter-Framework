@@ -33,9 +33,10 @@ async fn newsletters_available_for_confirmed_subscribers() {
     create_confirmed_subscriber(&app).await;
     app.test_user.login(&app).await;
 
-    Mock::given(any())
+    Mock::given(path("/email"))
+        .and(method("POST"))
         .respond_with(ResponseTemplate::new(200))
-        .expect(0)
+        .expect(1)
         .mount(&app.email_server)
         .await;
 

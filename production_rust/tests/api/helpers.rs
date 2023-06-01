@@ -115,7 +115,7 @@ impl TestApp {
 
     pub async fn get_publish_newsletter(&self) -> reqwest::Response {
         self.api_client
-            .post(&format!("{}/admin/newsletters", &self.address))
+            .get(&format!("{}/admin/newsletters", &self.address))
             .send()
             .await
             .expect("Failed to execute request.")
