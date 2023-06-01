@@ -1,18 +1,11 @@
-use crate::session_state::TypedSession;
-use crate::utils::{e500, see_other};
 use actix_web::http::header::ContentType;
 use actix_web::HttpResponse;
 use actix_web_flash_messages::IncomingFlashMessages;
 use std::fmt::Write;
 
 pub async fn new_newsletter_form(
-    session: TypedSession,
     flash_messages: IncomingFlashMessages,
 ) -> Result<HttpResponse, actix_web::Error> {
-    if session.get_user_id().map_err(e500)?.is_none() {
-        return Ok(see_other("/login"));
-    };
-
     let mut msg_html = String::new();
     for m in flash_messages.iter() {
         writeln!(msg_html, "<p><i>{}</i></p>", m.content()).unwrap();
@@ -30,15 +23,33 @@ pub async fn new_newsletter_form(
 <body>
     {msg_html}
     <form action="/admin/newsletters" method="post">
-        <label> New Newsletter
+        <label> Title:<br> 
             <input
                 type="text"
-                placeholder="Draft a newsletter"
-                name="new_newsletter"
+                placeholder="Issue title"
+                name="title"
             >
         </label>
         <br>
-        <button type="submit">Submit newsletter</button>
+        <label> Plain text content:<br>
+            <textarea
+                placeholder="Enter the content in plain text"
+                name="text_content"
+                rows="20"
+                cols="50"
+            ></textarea>
+        </label>
+        <br>
+        <label> HTML text content:<br>
+            <textarea
+                placeholder="Enter the content in HTML format"
+                name="html_content"
+                rows="20"
+                cols="50"
+            ></textarea>
+        </label>
+        <br>
+        <button type="submit">Publish</button>
     </form>
     <p><a href="/admin/dashboard">&lt;- Back</a></p>
 </body>

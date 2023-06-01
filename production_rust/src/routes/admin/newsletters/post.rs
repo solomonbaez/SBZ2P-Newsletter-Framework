@@ -2,7 +2,6 @@ use crate::authentication::UserId;
 use crate::domain::SubscriberEmail;
 use crate::email_client::EmailClient;
 use crate::utils::{e500, see_other};
-use actix_web::web::ReqData;
 use actix_web::{web, HttpResponse};
 use actix_web_flash_messages::FlashMessage;
 use anyhow::Context;
@@ -23,11 +22,13 @@ pub struct FormData {
 )]
 pub async fn publish_newsletter(
     form: web::Form<FormData>,
-    connection_pool: web::Data<PgPool>,
     user_id: web::ReqData<UserId>,
+    connection_pool: web::Data<PgPool>,
     email_client: web::Data<EmailClient>,
 ) -> Result<HttpResponse, actix_web::Error> {
-    let subscribers = get_confirmed_subscribers(&connection_pool).await.map_err(e500)?;
+    let subscribers = get_confirmed_subscribers(&connection_pool)
+        .await
+        .map_err(e500)?;
     for subscriber in subscribers {
         match subscriber {
             Ok(subscriber) => {
@@ -55,7 +56,7 @@ pub async fn publish_newsletter(
     }
 
     FlashMessage::info("The newsletter issue has been published.").send();
-    Ok(see_other("/admin/dashboard"))
+    Ok(see_other("/admin/newsletters"))
 }
 
 struct ConfirmedSubscriber {
@@ -74,7 +75,7 @@ async fn get_confirmed_subscribers(
     .fetch_all(connection_pool)
     .await?
     .into_iter()
-    .map(|r| match SubscriberEmail::parser(r.email) {
+    .map(|r| match SubscriberEmail::parse(r.email) {
         Ok(email) => Ok(ConfirmedSubscriber { email }),
         Err(error) => Err(anyhow::anyhow!(error)),
     })

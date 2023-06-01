@@ -46,16 +46,6 @@ impl TestApp {
             .expect("Failed to execute request.")
     }
 
-    pub async fn post_newsletter(&self, body: serde_json::Value) -> reqwest::Response {
-        self.api_client
-            .post(&format!("{}/newsletters", &self.address))
-            .basic_auth(&self.test_user.username, Some(&self.test_user.password))
-            .json(&body)
-            .send()
-            .await
-            .expect("Failed to execute request.")
-    }
-
     pub async fn post_login<Body>(&self, body: &Body) -> reqwest::Response
     where
         Body: serde::Serialize,
@@ -186,6 +176,14 @@ impl TestUser {
             // password: Uuid::new_v4().to_string(),
             password: "gloriainvigilata".into(),
         }
+    }
+
+    pub async fn login(&self, app: &TestApp) {
+        app.post_login(&serde_json::json!({
+            "username": &self.username,
+            "password": &self.password,
+        }))
+        .await;
     }
 
     async fn store(&self, connection_pool: &PgPool) {
