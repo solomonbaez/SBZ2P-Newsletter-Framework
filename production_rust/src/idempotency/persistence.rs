@@ -1,4 +1,5 @@
 use super::IdempotencyKey;
+use actix_web::http::StatusCode;
 use actix_web::HttpResponse;
 use sqlx::PgPool;
 use uuid::Uuid;
@@ -16,7 +17,7 @@ pub async fn get_saved_response(
     idempotency_key: &IdempotencyKey,
     user_id: Uuid,
 ) -> Result<Option<HttpResponse>, anyhow::Error> {
-    let _saved_response = sqlx::query!(
+    let saved_response = sqlx::query!(
         r#"
         SELECT 
             response_status_code,
@@ -32,5 +33,15 @@ pub async fn get_saved_response(
     )
     .fetch_optional(connection_pool)
     .await?;
-    todo!()
+
+    if let Some(r) = saved_response {
+        let status_code = StatusCode::from_u16(r.response_status_code.try_into()?)?;
+        let mut response = HttpResponse::build(status_code);
+        for HeaderPairRecord { name, value } in r.response_headers {
+            response.append_header((name, value));
+        }
+        Ok(Some(response.body(r.response_body)))
+    } else {
+        Ok(None)
+    }
 }
