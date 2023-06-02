@@ -53,6 +53,7 @@ async fn newsletters_unavailable_for_unconfirmed_subscribers() {
         "title": "Newsletter title",
         "text_content": "Newsletter body as text",
         "html_content": "<p>Newsletter body as html</p>",
+        "idempotency_key": uuid::Uuid::new_v4().to_string(),
     });
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
@@ -79,6 +80,7 @@ async fn newsletters_available_for_confirmed_subscribers() {
         "title": "Newsletter title",
         "text_content": "Newsletter body as text",
         "html_content": "<p>Newsletter body as html</p>",
+        "idempotency_key": uuid::Uuid::new_v4().to_string(),
     });
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
@@ -96,7 +98,7 @@ async fn login_required_to_see_newsletter_form() {
     assert_is_redirect_to(&response, "/login")
 }
 
-#[tokio::test]
+#[tokio::test] // check this test at some point, should have failed w/o idpkey
 async fn login_required_to_publish_newsletter() {
     let app = spawn_app().await;
 
@@ -104,6 +106,7 @@ async fn login_required_to_publish_newsletter() {
         "title": "Newsletter title",
         "text_content": "Newsletter body as text",
         "html_content": "<p>Newsletter body as html</p>",
+        "idempotency_key": uuid::Uuid::new_v4().to_string(),
     });
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
