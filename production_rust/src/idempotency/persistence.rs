@@ -28,9 +28,9 @@ pub async fn get_saved_response(
     let saved_response = sqlx::query!(
         r#"
         SELECT 
-            response_status_code,
-            response_headers as "response_headers: Vec<HeaderPairRecord>",
-            response_body
+            response_status_code as "response_status_code!",
+            response_headers as "response_headers!: Vec<HeaderPairRecord>",
+            response_body as "response_body!"
         FROM idempotency
         WHERE
             user_id = $1 AND
@@ -96,4 +96,17 @@ pub async fn save_response(
 
     let http_response = response_head.set_body(body).map_into_boxed_body();
     Ok(http_response)
+}
+
+pub enum NextAction {
+    StartProcessing,
+    ReturnSavedResponse(HttpResponse),
+}
+
+pub async fn try_processing(
+    _connection_pool: &PgPool,
+    _idempotency_key: &IdempotencyKey,
+    _user_id: Uuid
+) -> Result<NextAction, anyhow::Error> {
+    todo!()
 }
