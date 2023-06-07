@@ -26,6 +26,18 @@
     },
     "query": "\n        SELECT user_id, password_hash FROM users\n        WHERE username = $1\n        "
   },
+  "2bc276bbc67dfed3b450003f8303e0f26ca0a1aba25b6161d2e67058ca28c4c8": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      }
+    },
+    "query": "\n        INSERT INTO issue_delivery_queue (\n            newsletter_issue_id,\n            subscriber_email\n        ) \n        SELECT $1, email\n        FROM subscriptions\n        WHERE status = 'confirmed'\n        "
+  },
   "49d67b84bb628271975ed9f0820e1710cec3f46db570f86150180d33702cad6c": {
     "describe": {
       "columns": [],

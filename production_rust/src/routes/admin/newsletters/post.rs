@@ -8,7 +8,7 @@ use crate::utils::{e400, e500, see_other};
 use actix_web::{web, HttpResponse};
 use actix_web_flash_messages::FlashMessage;
 use anyhow::Context;
-use sqlx::{Postgres, Transaction, PgPool};
+use sqlx::{PgPool, Postgres, Transaction};
 use uuid::Uuid;
 
 #[allow(dead_code)]
@@ -168,6 +168,6 @@ async fn enqueue_delivery_tasks(
     )
     .execute(transaction)
     .await?;
-    
+
     Ok(())
 }
