@@ -1,8 +1,33 @@
 use crate::domain::SubscriberEmail;
 use crate::email_client::EmailClient;
 use sqlx::{PgPool, Postgres, Transaction};
+use std::time::Duration;
 use tracing::{field::display, Span};
 use uuid::Uuid;
+
+#[allow(dead_code)]
+async fn worker_loop(
+    connection_pool: PgPool,
+    email_client: EmailClient,
+) -> Result<(), anyhow::Error> {
+    loop {
+        match try_execute_task(&connection_pool, &email_client).await {
+            Ok(ExecutionOutcome::EmptyQueue) => {
+                tokio::time::sleep(Duration::from_secs(10)).await;
+            }
+            Err(_) => {
+                tokio::time::sleep(Duration::from_secs(1)).await;
+            }
+            Ok(ExecutionOutcome::TaskCompleted) => {}
+        }
+    }
+}
+
+#[allow(dead_code)]
+enum ExecutionOutcome {
+    TaskCompleted,
+    EmptyQueue,
+}
 
 #[tracing::instrument(
     skip_all,
@@ -15,45 +40,48 @@ use uuid::Uuid;
 async fn try_execute_task(
     connection_pool: &PgPool,
     email_client: &EmailClient,
-) -> Result<(), anyhow::Error> {
-    if let Some((transaction, issue_id, email)) = dequeue_task(connection_pool).await? {
-        Span::current()
-            .record("newsletter_issue_id", &display(issue_id))
-            .record("subscriber_email", &display(&email));
+) -> Result<ExecutionOutcome, anyhow::Error> {
+    let task = dequeue_task(connection_pool).await?;
+    if task.is_none() {
+        return Ok(ExecutionOutcome::EmptyQueue);
+    }
+    let (transaction, issue_id, email) = task.unwrap();
+    Span::current()
+        .record("newsletter_issue_id", &display(issue_id))
+        .record("subscriber_email", &display(&email));
 
-        match SubscriberEmail::parse(email.clone()) {
-            Ok(email) => {
-                let issue = get_issue(connection_pool, issue_id).await?;
-                if let Err(e) = email_client
-                    .send_email(
-                        &email,
-                        &issue.title,
-                        &issue.text_content,
-                        &issue.html_content,
-                    )
-                    .await
-                {
-                    tracing::error!(
-                        error.cause_chain = ?e,
-                        error.message = %e,
-                        "Failed to deliver issue to a confirmed subscriber. \
-                        Skipping.",
-                    );
-                }
-            }
-            Err(e) => {
+    match SubscriberEmail::parse(email.clone()) {
+        Ok(email) => {
+            let issue = get_issue(connection_pool, issue_id).await?;
+            if let Err(e) = email_client
+                .send_email(
+                    &email,
+                    &issue.title,
+                    &issue.text_content,
+                    &issue.html_content,
+                )
+                .await
+            {
                 tracing::error!(
                     error.cause_chain = ?e,
                     error.message = %e,
-                    "Skipping a confirmed subscriber. \
-                    Their stored contact details are invalid",
+                    "Failed to deliver issue to a confirmed subscriber. \
+                    Skipping.",
                 );
             }
         }
-
-        delete_task(transaction, issue_id, &email).await?;
+        Err(e) => {
+            tracing::error!(
+                error.cause_chain = ?e,
+                error.message = %e,
+                "Skipping a confirmed subscriber. \
+                Their stored contact details are invalid",
+            );
+        }
     }
-    Ok(())
+
+    delete_task(transaction, issue_id, &email).await?;
+    Ok(ExecutionOutcome::TaskCompleted)
 }
 
 #[allow(dead_code)]
