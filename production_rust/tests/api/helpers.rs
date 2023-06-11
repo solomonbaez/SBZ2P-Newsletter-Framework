@@ -2,6 +2,8 @@ use argon2::password_hash::SaltString;
 use argon2::{Algorithm, Argon2, Params, PasswordHasher, Version};
 use once_cell::sync::Lazy;
 use production_rust::configuration::{get_configuration, DatabaseSettings};
+use production_rust::email_client::EmailClient;
+use production_rust::issue_delivery_worker::{try_execute_task, ExecutionOutcome};
 use production_rust::startup::{get_connection_pool, Application};
 use production_rust::telemetry::{get_subscriber, init_subscriber};
 use sqlx::{Connection, Executor, PgConnection, PgPool};
@@ -159,6 +161,19 @@ impl TestApp {
         ConfirmationLinks {
             html_link,
             text_link,
+        }
+    }
+
+    #[allow(dead_code)]
+    pub async fn dispatch_all_pending_emails(&self) {
+        loop {
+            if let ExecutionOutcome::EmptyQueue =
+                try_execute_task(&self.pg_pool, &self.email_client)
+                    .await
+                    .unwrap()
+            {
+                break;
+            }
         }
     }
 }
