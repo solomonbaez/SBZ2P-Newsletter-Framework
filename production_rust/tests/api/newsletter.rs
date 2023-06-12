@@ -71,7 +71,11 @@ async fn newsletters_unavailable_for_unconfirmed_subscribers() {
     assert_is_redirect_to(&response, "/admin/newsletters");
 
     let html_page = app.get_publish_newsletter_html().await;
-    assert!(html_page.contains("<p><i>The newsletter issue has been published.</i></p>"));
+    assert!(html_page.contains(
+        "<p><i>The newsletter issue has been accepted -> \
+        emails will be delivered shortly.</i></p>"
+    ));
+    app.dispatch_all_pending_emails().await;
 }
 
 #[tokio::test]
@@ -98,7 +102,11 @@ async fn newsletters_available_for_confirmed_subscribers() {
     assert_is_redirect_to(&response, "/admin/newsletters");
 
     let html_page = app.get_publish_newsletter_html().await;
-    assert!(html_page.contains("<p><i>The newsletter issue has been published.</i></p>"));
+    assert!(html_page.contains(
+        "<p><i>The newsletter issue has been accepted -> \
+        emails will be delivered shortly.</i></p>"
+    ));
+    app.dispatch_all_pending_emails().await;
 }
 
 #[tokio::test]
@@ -148,13 +156,20 @@ async fn newsletter_creation_is_idempotent() {
     assert_is_redirect_to(&response, "/admin/newsletters");
 
     let html_page = app.get_publish_newsletter_html().await;
-    assert!(html_page.contains("<p><i>The newsletter issue has been published.</i></p>"));
+    assert!(html_page.contains(
+        "<p><i>The newsletter issue has been accepted -> \
+        emails will be delivered shortly.</i></p>"
+    ));
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
     assert_is_redirect_to(&response, "/admin/newsletters");
 
     let html_page = app.get_publish_newsletter_html().await;
-    assert!(html_page.contains("<p><i>The newsletter issue has been published.</i></p>"));
+    assert!(html_page.contains(
+        "<p><i>The newsletter issue has been accepted -> \
+        emails will be delivered shortly.</i></p>"
+    ));
+    app.dispatch_all_pending_emails().await;
 }
 
 #[tokio::test]
@@ -185,6 +200,7 @@ async fn graceful_handling_concurrent_form_submission() {
         response_1.text().await.unwrap(),
         response_2.text().await.unwrap()
     );
+    app.dispatch_all_pending_emails().await;
 }
 
 // fn when_sending_an_email() -> MockBuilder {
@@ -219,7 +235,7 @@ async fn graceful_handling_concurrent_form_submission() {
 //         .await;
 
 //     let response = app.post_publish_newsletter(&newsletter_request_body).await;
-//     assert_eq!(response.status().as_u16(), 500);
+//     assert_eq!(response.status().as_u16(), 303);
 
 //     when_sending_an_email()
 //         .respond_with(ResponseTemplate::new(200))
