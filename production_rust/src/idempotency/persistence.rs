@@ -110,9 +110,6 @@ pub async fn try_processing(
     user_id: Uuid,
 ) -> Result<NextAction, anyhow::Error> {
     let mut transaction = connection_pool.begin().await?;
-    sqlx::query!("SET TRANSACTION ISOLATION LEVEL repeatable read")
-        .execute(&mut transaction)
-        .await?;
     let n_inserted_rows = sqlx::query!(
         r#"
         INSERT INTO idempotency (
@@ -126,7 +123,7 @@ pub async fn try_processing(
         user_id,
         idempotency_key.as_ref()
     )
-    .execute(connection_pool) // fails with transaction utilization
+    .execute(&mut transaction)
     .await?
     .rows_affected();
     if n_inserted_rows > 0 {

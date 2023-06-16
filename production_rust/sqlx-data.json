@@ -179,16 +179,6 @@
     },
     "query": "\n        SELECT username FROM users WHERE user_id = $1\n        "
   },
-  "68d9262c70393ce893643c23c6a7c1c5713fbc15b2844b2d3178a82d5120f0d2": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": []
-      }
-    },
-    "query": "SET TRANSACTION ISOLATION LEVEL repeatable read"
-  },
   "774c1b204b2732c27870a293422d36e93e11b1d43b5d6568069e97f27e201d96": {
     "describe": {
       "columns": [],
