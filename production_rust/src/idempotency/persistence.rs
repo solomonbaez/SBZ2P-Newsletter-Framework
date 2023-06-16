@@ -126,7 +126,7 @@ pub async fn try_processing(
         user_id,
         idempotency_key.as_ref()
     )
-    .execute(&mut transaction)
+    .execute(connection_pool) // fails with transaction utilization
     .await?
     .rows_affected();
     if n_inserted_rows > 0 {
