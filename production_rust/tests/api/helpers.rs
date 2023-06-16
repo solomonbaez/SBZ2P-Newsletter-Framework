@@ -118,7 +118,7 @@ impl TestApp {
 
     pub async fn get_publish_newsletter(&self) -> reqwest::Response {
         self.api_client
-            .get(&format!("{}/admin/newsletters", &self.address))
+            .get(&format!("{}/admin/newsletter", &self.address))
             .send()
             .await
             .expect("Failed to execute request.")
@@ -133,7 +133,7 @@ impl TestApp {
         Body: serde::Serialize,
     {
         self.api_client
-            .post(&format!("{}/admin/newsletters", &self.address))
+            .post(&format!("{}/admin/newsletter", &self.address))
             .form(body)
             .send()
             .await
