@@ -2,6 +2,7 @@ use super::IdempotencyKey;
 use actix_web::body::to_bytes;
 use actix_web::http::StatusCode;
 use actix_web::HttpResponse;
+use chrono::Utc;
 use sqlx::postgres::PgHasArrayType;
 use sqlx::{PgPool, Postgres, Transaction};
 use uuid::Uuid;
@@ -28,6 +29,7 @@ pub async fn get_saved_response(
     idempotency_key: &IdempotencyKey,
     user_id: Uuid,
 ) -> Result<Option<HttpResponse>, anyhow::Error> {
+    let expiry_timestamp = Utc::now() - chrono::Duration::hours(24);
     let saved_response = sqlx::query!(
         r#"
         SELECT 
@@ -36,11 +38,13 @@ pub async fn get_saved_response(
             response_body as "response_body!"
         FROM idempotency
         WHERE
-            user_id = $1 AND
-            idempotency_key = $2
+            user_id = $1 
+            AND idempotency_key = $2
+            AND created_at >= $3
         "#,
         user_id,
-        idempotency_key.as_ref()
+        idempotency_key.as_ref(),
+        expiry_timestamp
     )
     .fetch_optional(connection_pool)
     .await?;
@@ -76,19 +80,22 @@ pub async fn save_response(
         h
     };
 
+    let expiry_timestamp = Utc::now() - chrono::Duration::hours(24);
     sqlx::query_unchecked!(
         r#"
         UPDATE idempotency
         SET 
-            response_status_code = $3,
-            response_headers = $4,
-            response_body = $5
+            response_status_code = $4,
+            response_headers = $5,
+            response_body = $6
         WHERE 
-            user_id = $1 AND
-            idempotency_key = $2
+            user_id = $1 
+            AND idempotency_key = $2
+            AND created_at >= $3
         "#,
         user_id,
         idempotency_key.as_ref(),
+        expiry_timestamp,
         status_code,
         headers,
         body.as_ref()
