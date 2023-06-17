@@ -145,3 +145,27 @@ pub async fn try_processing(
         Ok(NextAction::ReturnSavedResponse(saved_response))
     }
 }
+
+#[allow(dead_code)]
+pub async fn delete_expired_keys(
+    connection_pool: &PgPool,
+    idempotency_key: &IdempotencyKey,
+    user_id: Uuid,
+) -> Result<(), anyhow::Error> {
+    let expiry_timestamp = Utc::now() - chrono::Duration::hours(24);
+    sqlx::query!(
+        r#"
+        DELETE FROM idempotency
+        WHERE
+            user_id = $1
+            AND idempotency_key = $2
+            AND created_at < $3
+        "#,
+        user_id,
+        idempotency_key.as_ref(),
+        expiry_timestamp
+    )
+    .execute(connection_pool)
+    .await?;
+    Ok(())
+}

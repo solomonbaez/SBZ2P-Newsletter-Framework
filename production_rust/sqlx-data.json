@@ -265,6 +265,20 @@
     },
     "query": "\n        INSERT INTO newsletter_issues (\n            newsletter_issue_id,\n            title,\n            text_content,\n            html_content,\n            published_at\n        )\n        VALUES ($1, $2, $3, $4, now())\n        "
   },
+  "7ef4f6c396270fb07645811a1d0c9cbe61707437a03980bd8612c6ad4ebfedaa": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Text",
+          "Timestamptz"
+        ]
+      }
+    },
+    "query": "\n        DELETE FROM idempotency\n        WHERE\n            user_id = $1\n            AND idempotency_key = $2\n            AND created_at < $3\n        "
+  },
   "9341e1139459e8f21883417b57ca8421442532b40de510bae5880a24476753ef": {
     "describe": {
       "columns": [],
