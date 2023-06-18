@@ -57,7 +57,8 @@ pub async fn get_saved_response(
         }
         Ok(Some(response.body(r.response_body)))
     } else {
-        Ok(None)
+        delete_expired_keys(connection_pool, idempotency_key, user_id).await?;
+        Ok(None) // need to return an HTTP error
     }
 }
 
@@ -146,7 +147,6 @@ pub async fn try_processing(
     }
 }
 
-#[allow(dead_code)]
 pub async fn delete_expired_keys(
     connection_pool: &PgPool,
     idempotency_key: &IdempotencyKey,
