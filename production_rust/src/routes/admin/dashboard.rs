@@ -27,19 +27,56 @@ pub async fn admin_dashboard(
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Admin dashboard</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #3B5323;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }}
+
+        .dashboard {{
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }}
+
+        h1 {{
+            text-align: center;
+        }}
+
+        o1 {{
+            list-style-type: none;
+            padding-left: 0;
+        }}
+
+        li {{
+            margin-bottom: 10px;
+        }}
+        
+        li a:hover {{
+            text-decoration: underline;
+        }}
+    </style>
 </head>
 <body>
-    <p>Welcome {username}!</p>
-    <p>Available actions:</p>
-    <ol>
-        <li><a href="/admin/newsletter">Send a newsletter</a></li>
-        <li><a href="/admin/password">Change password</a></li>
-        <li>
-            <form name ="logoutForm" action="/admin/logout" method="post">
-                <input type="submit" value="Logout">
-            </form>
-        </li>
-    </ol>
+    <div class="dashboard">
+        <h1>Welcome {username}!</h1>
+        <p>Available actions:</p>
+        <ol>
+            <li><a href="/admin/newsletter">Send a newsletter</a></li>
+            <li><a href="/admin/password">Change password</a></li>
+            <li>
+                <form name ="logoutForm" action="/admin/logout" method="post">
+                    <input type="submit" value="Logout">
+                </form>
+            </li>
+        </ol>
+    </div>
 </body>
 </html>"#
         )))
