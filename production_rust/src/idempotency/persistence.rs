@@ -21,9 +21,6 @@ impl PgHasArrayType for HeaderPairRecord {
     }
 }
 
-// TODO!() implement an idempotency expiry
-// if expiry is < now() consider it invalid
-// either prompt new key creation or fail out
 pub async fn get_saved_response(
     connection_pool: &PgPool,
     idempotency_key: &IdempotencyKey,
@@ -58,7 +55,7 @@ pub async fn get_saved_response(
         Ok(Some(response.body(r.response_body)))
     } else {
         delete_expired_keys(connection_pool, idempotency_key, user_id).await?;
-        Ok(None) // need to return an HTTP error
+        Ok(None)
     }
 }
 

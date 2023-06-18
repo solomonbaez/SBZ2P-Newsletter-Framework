@@ -23,7 +23,7 @@ pub async fn new_newsletter_form(
 </head>
 <body>
     {msg_html}
-    <form action="/admin/newsletters" method="post">
+    <form action="/admin/newsletter" method="post">
         <label> Title:<br> 
             <input
                 type="text"
