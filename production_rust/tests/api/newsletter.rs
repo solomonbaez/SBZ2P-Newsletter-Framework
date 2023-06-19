@@ -67,7 +67,7 @@ async fn newsletters_unavailable_for_unconfirmed_subscribers() {
     });
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
-    assert_is_redirect_to(&response, "/admin/newsletters");
+    assert_is_redirect_to(&response, "/admin/newsletter");
 
     let html_page = app.get_publish_newsletter_html().await;
     assert!(html_page.contains(
@@ -98,7 +98,7 @@ async fn newsletters_available_for_confirmed_subscribers() {
     });
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
-    assert_is_redirect_to(&response, "/admin/newsletters");
+    assert_is_redirect_to(&response, "/admin/newsletter");
 
     let html_page = app.get_publish_newsletter_html().await;
     assert!(html_page.contains(
@@ -152,7 +152,7 @@ async fn newsletter_creation_is_idempotent() {
     });
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
-    assert_is_redirect_to(&response, "/admin/newsletters");
+    assert_is_redirect_to(&response, "/admin/newsletter");
 
     let html_page = app.get_publish_newsletter_html().await;
     assert!(html_page.contains(
@@ -161,7 +161,7 @@ async fn newsletter_creation_is_idempotent() {
     ));
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
-    assert_is_redirect_to(&response, "/admin/newsletters");
+    assert_is_redirect_to(&response, "/admin/newsletter");
 
     let html_page = app.get_publish_newsletter_html().await;
     assert!(html_page.contains(
