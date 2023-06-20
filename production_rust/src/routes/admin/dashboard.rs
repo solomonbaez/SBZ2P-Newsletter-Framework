@@ -47,6 +47,7 @@ pub async fn admin_dashboard(
 
         h1 {{
             text-align: center;
+            color: #3B5323;
         }}
 
         o1 {{
@@ -61,6 +62,35 @@ pub async fn admin_dashboard(
         li a:hover {{
             text-decoration: underline;
         }}
+
+        .form-container {{
+            background-color: #F8F8F8;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }}
+
+
+        form {{
+            display: flex;
+            flex-direction: column;
+        }}
+
+        label {{
+            margin-bottom: 10px;
+            color: #3B5323;
+        }}
+
+        input[type="submit"] {{
+            padding: 10px 20px;
+            background-color: #3B5323;
+            color: #ffffff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }}
     </style>
 </head>
 <body>
@@ -70,12 +100,11 @@ pub async fn admin_dashboard(
         <ol>
             <li><a href="/admin/newsletter">Send a newsletter</a></li>
             <li><a href="/admin/password">Change password</a></li>
-            <li>
-                <form name ="logoutForm" action="/admin/logout" method="post">
-                    <input type="submit" value="Logout">
-                </form>
-            </li>
+            <li><a href="/home">Go to home</a></li> 
         </ol>
+        <form name ="logoutForm" action="/admin/logout" method="post">
+            <input type="submit" value="Logout">
+        </form>
     </div>
 </body>
 </html>"#
