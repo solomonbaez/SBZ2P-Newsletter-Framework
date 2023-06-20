@@ -76,7 +76,7 @@ pub async fn login_form(flash_messages: IncomingFlashMessages) -> HttpResponse {
     </head>
     <body>
         <div class="form-container">
-            <h1> Admin Login</h1>
+            <h1>Admin Login</h1>
             {error_html}
             <form action="/login" method="post">
                 <label>Username:<br>
