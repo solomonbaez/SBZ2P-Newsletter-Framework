@@ -61,16 +61,28 @@ pub async fn change_password_form(
             color: #3B5323;
         }}
 
-        input[type="text"], textarea {{
-            height: 20px;
-            width: 100%;
-            padding: 5px;
+        .input-group {{
+            margin-bottom: 20px;
+        }}
+
+        .input-group label {{
+            display: block;
+        }}
+
+        .input-group input[type="password"] {{
+            width: calc(100% - 12px);
+            padding: 5px 6px;
             border: 1px solid #ccc;
             border-radius: 3px;
-            margin-bottom: 5px;
+        }}
+
+        .button-container {{
+            display: flex;
+            justify-content: center;
         }}
 
         button[type="submit"], button[type="button"] {{
+            margin-right: 10px;
             padding: 10px 20px;
             background-color: #3B5323;
             color: #ffffff;
@@ -79,7 +91,7 @@ pub async fn change_password_form(
             curson: pointer;
         }}
 
-        button:hover {{
+        button[type="submit"]:hover, button[type="button"]:hover {{
             background-color: #2A3F1B;
         }}
 
@@ -94,22 +106,22 @@ pub async fn change_password_form(
         <h1>Change Admin Password</h1>
         {msg_html}
         <form action="/admin/password" method="post">
-            <label>Current password:
-                <input
-                    type="pasword"
-                    placeholder="Enter current password"
-                    name="current_password"
+            <div class="input-group">
+                <label for="current-password">Current Password:</label>
+                <input type="password" 
+                    id="current-password"
+                    name="current-password"
+                    placeholder="Enter your current password"
                 >
-            </label>
-            <br>
-            <label>New password:
-                <input
-                    type="password"
-                    placeholder="Enter new password"
-                    name="new_password"
+            </div>
+            <div class="input-group">
+                <label for="new-password">New Password:</label>
+                <input type="password" 
+                    id="new-password" 
+                    name="new-password" 
+                    placeholder="Enter your new password"
                 >
-            </label>
-            <br>
+            </div>
             <div class="button-container">    
                 <button type="submit">Change password</button>
                 <a href="/admin/dashboard"><button type="button">Back</button>

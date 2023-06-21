@@ -93,7 +93,6 @@ pub async fn login_form(flash_messages: IncomingFlashMessages) -> HttpResponse {
                         name="password"
                     >
                 </label>
-                
                 <button type="submit">Login</button>
             </form>
     </body>
