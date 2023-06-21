@@ -76,6 +76,13 @@ pub async fn change_password_form(
             border-radius: 3px;
         }}
 
+        .input-group button {{
+            background-color: #F3F3F3;
+            border: none;
+            color: #000;
+            padding: 0;
+        }}
+
         .button-container {{
             display: flex;
             justify-content: center;
@@ -100,6 +107,20 @@ pub async fn change_password_form(
             text-decoration: none;
         }}
     </style>
+    <script>
+        function togglePasswordVisibility(elementId) {{
+            const passwordInput = document.getElementById(elementId);
+            const toggleButton = document.getElementById(elementId + '-toggle');
+
+            if (passwordInput.type == 'password') {{
+                passwordInput.type = 'text';
+                toggleButton.textContent = 'Hide';
+            }} else {{
+                passwordInput.type = 'password';
+                toggleButton.textContent = 'Show';
+            }}
+        }}
+    </script>
 </head>
 <body>
     <div class="form-container">
@@ -113,6 +134,10 @@ pub async fn change_password_form(
                     name="current-password"
                     placeholder="Enter your current password"
                 >
+                <button type="button" 
+                    id="current-password-toggle" 
+                    onclick="togglePasswordVisibility('current-password')"
+                >Show</button>
             </div>
             <div class="input-group">
                 <label for="new-password">New Password:</label>
@@ -121,6 +146,10 @@ pub async fn change_password_form(
                     name="new-password" 
                     placeholder="Enter your new password"
                 >
+                <button type="button" 
+                    id="new-password-toggle" 
+                    onclick="togglePasswordVisibility('new-password')"
+                >Show</button>
             </div>
             <div class="button-container">    
                 <button type="submit">Change password</button>
