@@ -54,7 +54,7 @@ pub async fn get_saved_response(
         }
         Ok(Some(response.body(r.response_body)))
     } else {
-        delete_expired_keys(connection_pool, idempotency_key, user_id).await?;
+        delete_expired_keys(connection_pool, idempotency_key, user_id, expiry_timestamp).await?;
         Ok(None)
     }
 }
@@ -148,8 +148,8 @@ pub async fn delete_expired_keys(
     connection_pool: &PgPool,
     idempotency_key: &IdempotencyKey,
     user_id: Uuid,
+    expiry: chrono::DateTime<Utc>,
 ) -> Result<(), anyhow::Error> {
-    let expiry_timestamp = Utc::now() - chrono::Duration::hours(24);
     sqlx::query!(
         r#"
         DELETE FROM idempotency
@@ -160,7 +160,7 @@ pub async fn delete_expired_keys(
         "#,
         user_id,
         idempotency_key.as_ref(),
-        expiry_timestamp
+        expiry,
     )
     .execute(connection_pool)
     .await?;
