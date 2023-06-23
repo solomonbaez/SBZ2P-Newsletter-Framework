@@ -61,12 +61,14 @@ async fn newsletters_unavailable_for_unconfirmed_subscribers() {
         .mount(&app.email_server)
         .await;
 
+    let expiration_rfc = (Utc::now() - chrono::Duration::hours(24)).to_rfc2822();
+
     let newsletter_request_body = serde_json::json!({
         "title": "Newsletter title",
-        "text_content": "Newsletter body as text",
-        "html_content": "<p>Newsletter body as html</p>",
+        "text_content": "Newsletter body as plain text",
+        "html_content": "<p>Newsletter body as HTML</p>",
         "idempotency_key": Uuid::new_v4().to_string(),
-        "timestamp_rfc": Utc::now().to_rfc2822(),
+        "expiration_rfc": expiration_rfc,
     });
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
@@ -92,13 +94,14 @@ async fn newsletters_available_for_confirmed_subscribers() {
         .expect(1)
         .mount(&app.email_server)
         .await;
+    let expiration_rfc = (Utc::now() - chrono::Duration::hours(24)).to_rfc2822();
 
     let newsletter_request_body = serde_json::json!({
         "title": "Newsletter title",
-        "text_content": "Newsletter body as text",
-        "html_content": "<p>Newsletter body as html</p>",
+        "text_content": "Newsletter body as plain text",
+        "html_content": "<p>Newsletter body as HTML</p>",
         "idempotency_key": Uuid::new_v4().to_string(),
-        "timestamp_rfc": Utc::now().to_rfc2822(),
+        "expiration_rfc": expiration_rfc,
     });
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
@@ -124,12 +127,14 @@ async fn login_required_to_see_newsletter_form() {
 async fn login_required_to_publish_newsletter() {
     let app = spawn_app().await;
 
+    let expiration_rfc = (Utc::now() - chrono::Duration::hours(24)).to_rfc2822();
+
     let newsletter_request_body = serde_json::json!({
         "title": "Newsletter title",
-        "text_content": "Newsletter body as text",
-        "html_content": "<p>Newsletter body as html</p>",
+        "text_content": "Newsletter body as plain text",
+        "html_content": "<p>Newsletter body as HTML</p>",
         "idempotency_key": Uuid::new_v4().to_string(),
-        "timestamp_rfc": Utc::now().to_rfc2822(),
+        "expiration_rfc": expiration_rfc,
     });
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
@@ -149,12 +154,14 @@ async fn newsletter_creation_is_idempotent() {
         .mount(&app.email_server)
         .await;
 
+    let expiration_rfc = (Utc::now() - chrono::Duration::hours(24)).to_rfc2822();
+
     let newsletter_request_body = serde_json::json!({
         "title": "Newsletter title",
         "text_content": "Newsletter body as plain text",
         "html_content": "<p>Newsletter body as HTML</p>",
         "idempotency_key": Uuid::new_v4().to_string(),
-        "timestamp_rfc": Utc::now().to_rfc2822(),
+        "expiration_rfc": expiration_rfc,
     });
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
@@ -190,13 +197,16 @@ async fn graceful_handling_concurrent_form_submission() {
         .mount(&app.email_server)
         .await;
 
+    let expiration_rfc = (Utc::now() - chrono::Duration::hours(24)).to_rfc2822();
+
     let newsletter_request_body = serde_json::json!({
         "title": "Newsletter title",
         "text_content": "Newsletter body as plain text",
         "html_content": "<p>Newsletter body as HTML</p>",
         "idempotency_key": Uuid::new_v4().to_string(),
-        "timestamp_rfc": Utc::now().to_rfc2822(),
+        "expiration_rfc": expiration_rfc
     });
+
     let response_1 = app.post_publish_newsletter(&newsletter_request_body);
     let response_2 = app.post_publish_newsletter(&newsletter_request_body);
     let (response_1, response_2) = tokio::join!(response_1, response_2);

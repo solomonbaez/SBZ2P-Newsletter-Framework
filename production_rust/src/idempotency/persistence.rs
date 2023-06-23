@@ -21,13 +21,13 @@ impl PgHasArrayType for HeaderPairRecord {
     }
 }
 
+// get_saved_response is primarily routing idempotency expiry
 pub async fn get_saved_response(
     connection_pool: &PgPool,
     idempotency_key: &IdempotencyKey,
     user_id: Uuid,
-    timestamp: chrono::DateTime<Utc>,
+    expiry: chrono::DateTime<Utc>,
 ) -> Result<Option<HttpResponse>, anyhow::Error> {
-    let expiry_timestamp = Utc::now() - chrono::Duration::hours(24);
     let saved_response = sqlx::query!(
         r#"
         SELECT 
@@ -42,7 +42,7 @@ pub async fn get_saved_response(
         "#,
         user_id,
         idempotency_key.as_ref(),
-        expiry_timestamp
+        expiry
     )
     .fetch_optional(connection_pool)
     .await?;
@@ -55,7 +55,7 @@ pub async fn get_saved_response(
         }
         Ok(Some(response.body(r.response_body)))
     } else {
-        delete_expired_keys(connection_pool, idempotency_key, user_id, timestamp).await?;
+        delete_expired_keys(connection_pool, idempotency_key, user_id, expiry).await?;
         Ok(None)
     }
 }
@@ -65,7 +65,7 @@ pub async fn save_response(
     idempotency_key: &IdempotencyKey,
     user_id: Uuid,
     http_response: HttpResponse,
-    timestamp: chrono::DateTime<Utc>,
+    expiry: chrono::DateTime<Utc>,
 ) -> Result<HttpResponse, anyhow::Error> {
     let (response_head, body) = http_response.into_parts();
     let body = to_bytes(body).await.map_err(|e| anyhow::anyhow!("{}", e))?;
@@ -80,7 +80,6 @@ pub async fn save_response(
         h
     };
 
-    let expiry_timestamp = timestamp - chrono::Duration::hours(24);
     sqlx::query_unchecked!(
         r#"
         UPDATE idempotency
@@ -95,7 +94,7 @@ pub async fn save_response(
         "#,
         user_id,
         idempotency_key.as_ref(),
-        expiry_timestamp,
+        expiry,
         status_code,
         headers,
         body.as_ref()
@@ -118,7 +117,7 @@ pub async fn try_processing(
     connection_pool: &PgPool,
     idempotency_key: &IdempotencyKey,
     user_id: Uuid,
-    timestamp: chrono::DateTime<Utc>,
+    expiry: chrono::DateTime<Utc>,
 ) -> Result<NextAction, anyhow::Error> {
     let mut transaction = connection_pool.begin().await?;
     let n_inserted_rows = sqlx::query!(
@@ -140,12 +139,9 @@ pub async fn try_processing(
     if n_inserted_rows > 0 {
         Ok(NextAction::StartProcessing(transaction))
     } else {
-        let saved_response =
-            get_saved_response(connection_pool, idempotency_key, user_id, timestamp)
-                .await?
-                .ok_or_else(|| {
-                    anyhow::anyhow!("We expected a saved response, we didn't find it")
-                })?;
+        let saved_response = get_saved_response(connection_pool, idempotency_key, user_id, expiry)
+            .await?
+            .ok_or_else(|| anyhow::anyhow!("We expected a saved response, we didn't find it"))?;
         Ok(NextAction::ReturnSavedResponse(saved_response))
     }
 }
