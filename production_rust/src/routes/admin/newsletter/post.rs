@@ -22,6 +22,7 @@ pub struct FormData {
     text_content: String,
     html_content: String,
     idempotency_key: String,
+    timestamp_rfc: String,
 }
 
 #[tracing::instrument(
@@ -33,19 +34,19 @@ pub async fn publish_newsletter(
     form: web::Form<FormData>,
     user_id: web::ReqData<UserId>,
     connection_pool: web::Data<PgPool>,
-    timestamp_rfc: String,
 ) -> Result<HttpResponse, actix_web::Error> {
-    let timestamp_utc =
-        DateTime::parse_from_rfc2822(&timestamp_rfc).expect("Could not validate timestamp.");
-
     let user_id = user_id.into_inner();
     let FormData {
         title,
         text_content,
         html_content,
         idempotency_key,
+        timestamp_rfc,
     } = form.0;
     let idempotency_key: IdempotencyKey = idempotency_key.try_into().map_err(e400)?;
+
+    let timestamp_utc =
+        DateTime::parse_from_rfc2822(&timestamp_rfc).expect("Could not validate timestamp.");
 
     // need to properly convert the timestamp to UTC
     let mut transaction = match try_processing(
