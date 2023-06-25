@@ -1,0 +1,90 @@
+body {
+    /* background-color: #E4F9F5; */
+    margin: 0;
+    text-align: center;
+    font-family: "Merriweather", serif;
+}
+
+.skill-row {
+    width: 50%;
+    margin: 100px auto 100px auto;
+    text-align: left;
+    line-height: 2;
+}
+
+hr {
+    border: dotted #EAF6F6 6px;
+    border-bottom: none;
+    width: 50%;
+    margin: 100px auto;
+}
+
+h1 {
+    color: #66BFBF;
+    font-size: 5.625rem;
+    margin: 50px auto 0 auto;
+    font-family: "Sacramento", cursive;
+}
+
+h2 {
+    color: #66BFBF;
+    font-size: 2.5rem;
+    font-family: "Montserrat", sans-serif;
+    font-weight: normal;
+}
+
+h3 {
+    color: #11999E;
+    font-family: "Montserrat", sans-serif;
+}
+
+.top-container {
+    background-color: #E4F9F5;
+    position: relative;
+    padding-top: 25px;
+    padding-bottom: 55px;
+}
+
+.bottom-container {
+    background-color: #66BFBF
+    padding: 50px 0px 20px;
+}
+
+#pfp {
+    padding-top: 25px;
+    border-radius: 100%;
+}
+
+.bio {
+    text-align: center;
+    width: 50%;
+}
+
+/* inline, vs block display */
+.work {
+    color: grey;
+    text-decoration: underline;
+}
+
+.top-cloud{
+    position: absolute;
+    right: 300px;
+    top: 50px;
+}
+
+.sub-cloud{
+    position: absolute;
+    left: 300px;
+    bottom: 300px;
+}
+
+.computer-img {
+    width: 30%;
+    float: left;
+    margin-right: 30px;
+}
+.python-img {
+    width: 50%;
+    float: right;
+    margin-right: 30px;
+}
