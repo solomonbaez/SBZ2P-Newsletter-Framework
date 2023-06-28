@@ -1,10 +1,10 @@
 use crate::authentication::UserId;
 use crate::idempotency::IdempotencyKey;
-use crate::utils::e400;
+use crate::utils::{e400, e500};
 use actix_web::{web, HttpResponse};
 use sqlx::PgPool;
-// use actix_web_flash_messages::FlashMessage;
-// use anyhow::Context;
+use actix_web_flash_messages::FlashMessage;
+use anyhow::Context;
 // use uuid::Uuid;
 
 #[allow(dead_code)]
@@ -14,51 +14,40 @@ pub struct UserKey {
 }
 
 #[tracing::instrument(
-    name="Revoke an idempotency key"
+    name="Change a key state"
     skip_all,
     fields(user_id=%*user_id)
 )]
-pub async fn revoke_key(
+pub async fn change_key_state(
     user_id: web::ReqData<UserId>,
     key: web::Form<UserKey>,
-    _connection_pool: web::Data<PgPool>,
+    connection_pool: web::Data<PgPool>,
+    validity: Bool,
 ) -> Result<HttpResponse, actix_web::Error> {
-    let _user_id = user_id.into_inner();
-    let idempotency_key = key.0;
+    let user_id = user_id.into_inner();
 
-    let _idempotency_key: IdempotencyKey = idempotency_key.try_into().map_err(e400)?;
+    let idempotency_key = key.0;
+    let idempotency_key: IdempotencyKey = idempotency_key.try_into().map_err(e400)?;
+    
+    let validity = key_state(
+        user_id, idempotency_key, connection_pool, validity
+    )
+    .await
+    .context("Failed to change key state")
+    .map_err(e500)?;
+
+    FlashMessage::info(
+        "The key state has been changed to {}", 
+        validity
+    )
+    .send();
 
     // TODO: Need to insert an idempotency validity column
     //       -> bool for deactivation/reactivation
-
-    // TODO: Need to create a idempotency/persistence fn to 
-    //       change the status of keys per user-input
-}
-
-#[tracing::instrument(
-    name="Restore an idempotency key"
-    skip_all,
-    fields(user_id=%*user_id)
-)]
-pub async fn revoke_key(
-    user_id: web::ReqData<UserId>,
-    key: web::Form<UserKey>,
-    _connection_pool: web::Data<PgPool>,
-) -> Result<HttpResponse, actix_web::Error> {
-    let _user_id = user_id.into_inner();
-    let idempotency_key = key.0;
-
-    let _idempotency_key: IdempotencyKey = idempotency_key.try_into().map_err(e400)?;
-
-    // TODO: Need to insert an idempotency validity column
-    //       -> bool for deactivation/reactivation
-
-    // TODO: Need to create a idempotency/persistence fn to 
-    //       change the status of keys per user-input
 }
 
 #[allow(dead_code)]
-async fn change_key_state(
+async fn key_state(
     user_id: Uuid,
     idempotency_key: Uuid,
     connection_pool: PgPool,
