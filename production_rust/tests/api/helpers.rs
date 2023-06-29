@@ -140,6 +140,30 @@ impl TestApp {
             .expect("Failed to execute request.")
     }
 
+    pub async fn get_manage_settings(&self) -> reqwest::Response {
+        self.api_client
+            .get(&format!("{}/admin/settings", &self.address))
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn get_manage_settings_html(&self) -> String {
+        self.get_manage_settings().await.text().await.unwrap()
+    }
+
+    pub async fn post_manage_settings<Body>(&self, validity: &Body) -> reqwest::Response
+    where
+        Body: serde::Serialize,
+    {
+        self.api_client
+            .post(&format!("{}/admin/settings", &self.address))
+            .form(validity)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
     pub fn get_confirmation_links(&self, email_request: &wiremock::Request) -> ConfirmationLinks {
         let email_body: serde_json::Value = serde_json::from_slice(&email_request.body).unwrap();
 

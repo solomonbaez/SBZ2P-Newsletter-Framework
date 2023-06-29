@@ -139,7 +139,7 @@ pub async fn manage_settings_form(
                     onclick="togglePasswordVisibility('idempotency')"
                 >Show</button>
             </div>
-            <div class="button-container">    
+            <div class="button-container">   
                 <button type="button">Revoke</button>
                 <button type="button">Restore</button>
                 <a href="/admin/dashboard"><button type="button">Back</button>
@@ -147,5 +147,5 @@ pub async fn manage_settings_form(
         </form>
 </body>
 </html>"#,
-        )))
+        ))) // need to add specific functions/pathways to push T/F boolean through to post on Revoke/Restore
 }

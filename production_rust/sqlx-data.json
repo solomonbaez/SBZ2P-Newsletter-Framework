@@ -304,6 +304,20 @@
     },
     "query": "UPDATE subscriptions SET status = 'confirmed' WHERE id = $1"
   },
+  "a8e9a45ef04b9732a57723ec1cf5ebd4b6eb0ca89fab027dd39bc8a756aa5bb9": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Text",
+          "Bool"
+        ]
+      }
+    },
+    "query": "\n        UPDATE idempotency\n        SET \n            validity = $3\n        WHERE\n            user_id = $1 \n            AND idempotency_key = $2\n        "
+  },
   "ad120337ee606be7b8d87238e2bb765d0da8ee61b1a3bc142414c4305ec5e17f": {
     "describe": {
       "columns": [
