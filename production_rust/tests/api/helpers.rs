@@ -152,13 +152,13 @@ impl TestApp {
         self.get_manage_settings().await.text().await.unwrap()
     }
 
-    pub async fn post_manage_settings<Body>(&self, validity: &Body) -> reqwest::Response
+    pub async fn post_manage_settings<Body>(&self, body: &Body) -> reqwest::Response
     where
         Body: serde::Serialize,
     {
         self.api_client
             .post(&format!("{}/admin/settings", &self.address))
-            .form(validity)
+            .form(body)
             .send()
             .await
             .expect("Failed to execute request.")

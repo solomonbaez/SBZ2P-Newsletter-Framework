@@ -246,30 +246,26 @@ async fn idempotency_expiration_prevents_queries() {
     assert_is_redirect_to(&response, "/admin/newsletter");
 }
 
-// #[tokio::test]
-// async fn idempotency_expiration_conflict_prevents_queries() {
-//     let app = spawn_app().await;
-//     create_confirmed_subscriber(&app).await;
-//     app.test_user.login(&app).await;
+#[tokio::test]
+async fn key_states_are_mutable() {
+    let app = spawn_app().await;
+    create_confirmed_subscriber(&app).await;
+    app.test_user.login(&app).await;
 
-//     Mock::given(path("/email"))
-//         .and(method("POST"))
-//         .respond_with(ResponseTemplate::new(500))
-//         .expect(1)
-//         .mount(&app.email_server)
-//         .await;
+    Mock::given(path("/email"))
+        .and(method("POST"))
+        .respond_with(ResponseTemplate::new(500))
+        .expect(0)
+        .mount(&app.email_server)
+        .await;
 
-//     let expiration_rfc = (Utc::now() + chrono::Duration::hours(24)).to_rfc2822();
+    let idempotency_key = Uuid::new_v4().to_string();
 
-//     let newsletter_request_body = serde_json::json!({
-//         "title": "Newsletter title",
-//         "text_content": "Newsletter body as plain text",
-//         "html_content": "<p>Newsletter body as HTML</p>",
-//         "idempotency_key": Uuid::new_v4().to_string(),
-//         "expiration_rfc": expiration_rfc,
-//     });
+    let settings_request_body = serde_json::json!({
+        "idempotency_key": idempotency_key,
+        "validity": "1",
+    });
 
-//     let response = app.post_publish_newsletter(&newsletter_request_body).await;
-//     assert_is_redirect_to(&response, "/admin/newsletter");
-
-// }
+    let response = app.post_manage_settings(&settings_request_body).await;
+    assert_is_redirect_to(&response, "/admin/settings")
+}
