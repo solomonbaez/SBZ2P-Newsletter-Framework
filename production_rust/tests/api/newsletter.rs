@@ -274,7 +274,7 @@ async fn key_states_are_mutable() {
 
     let settings_request_body = serde_json::json!({
         "idempotency_key": idempotency_key,
-        "validity": "1",
+        "validity": "0",
     });
 
     let response = app.post_manage_settings(&settings_request_body).await;
