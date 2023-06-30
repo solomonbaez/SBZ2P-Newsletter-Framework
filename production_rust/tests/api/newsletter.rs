@@ -267,5 +267,19 @@ async fn key_states_are_mutable() {
     });
 
     let response = app.post_manage_settings(&settings_request_body).await;
-    assert_is_redirect_to(&response, "/admin/settings")
+    assert_is_redirect_to(&response, "/admin/settings");
+
+    let html_page = app.get_manage_settings_html().await;
+    assert!(html_page.contains("The key state has been changed."));
+
+    let settings_request_body = serde_json::json!({
+        "idempotency_key": idempotency_key,
+        "validity": "1",
+    });
+
+    let response = app.post_manage_settings(&settings_request_body).await;
+    assert_is_redirect_to(&response, "/admin/settings");
+
+    let html_page = app.get_manage_settings_html().await;
+    assert!(html_page.contains("The key state has been changed."));
 }

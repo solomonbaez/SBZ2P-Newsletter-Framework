@@ -7,6 +7,10 @@ use anyhow::Context;
 use sqlx::PgPool;
 use uuid::Uuid;
 
+fn success_message() -> FlashMessage {
+    FlashMessage::info("The key state has been changed.")
+}
+
 #[allow(dead_code)]
 #[derive(serde::Deserialize)]
 pub struct FormData {
@@ -38,9 +42,8 @@ pub async fn change_key_state(
         .context("Failed to change key state")
         .map_err(e500)?;
 
-    FlashMessage::info("The key state has been changed").send();
-
     let response = see_other("/admin/settings");
+    success_message().send();
     Ok(response)
 }
 
