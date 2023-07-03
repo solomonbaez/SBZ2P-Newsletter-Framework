@@ -52,14 +52,14 @@ async fn key_state(
     idempotency_key: IdempotencyKey,
     connection_pool: &PgPool,
     validity: &str,
-) -> Result<(), sqlx::Error> {
+) -> Result<(), anyhow::Error> {
     let key_validity = match validity {
         "1" => true,
         "0" => false,
         &_ => false,
     };
 
-    sqlx::query!(
+    let changed_key = sqlx::query!(
         r#"
         UPDATE idempotency
         SET 
@@ -73,7 +73,12 @@ async fn key_state(
         key_validity,
     )
     .execute(connection_pool)
-    .await?;
+    .await?
+    .rows_affected();
 
-    Ok(())
+    if changed_key > 0 {
+        Ok(())
+    } else {
+        Err(anyhow::anyhow!("No matching key found."))
+    }
 }

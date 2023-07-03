@@ -242,10 +242,10 @@ async fn idempotency_expiration_prevents_queries() {
         "expiration_rfc": expiration_rfc,
     });
 
-    let response = &app.post_publish_newsletter(&newsletter_request_body).await;
+    let response = app.post_publish_newsletter(&newsletter_request_body).await;
     assert_is_redirect_to(&response, "/admin/newsletter");
 
-    let html_page = &app.get_publish_newsletter_html().await;
+    let html_page = app.get_publish_newsletter_html().await;
     assert_eq!(
         false,
         html_page.contains(
@@ -269,6 +269,24 @@ async fn key_states_are_mutable() {
         .await;
 
     let idempotency_key = Uuid::new_v4().to_string();
+    let expiration_rfc = (Utc::now() - chrono::Duration::hours(24)).to_rfc2822();
+
+    let newsletter_request_body = serde_json::json!({
+        "title": "Newsletter title",
+        "text_content": "Newsletter body as plain text",
+        "html_content": "<p>Newsletter body as HTML</p>",
+        "idempotency_key": idempotency_key,
+        "expiration_rfc": expiration_rfc,
+    });
+
+    let response = app.post_publish_newsletter(&newsletter_request_body).await;
+    assert_is_redirect_to(&response, "/admin/newsletter");
+
+    let html_page = app.get_publish_newsletter_html().await;
+    assert!(html_page.contains(
+        "<p><i>The newsletter issue has been accepted -> \
+        emails will be delivered shortly.</i></p>"
+    ));
 
     let settings_request_body = serde_json::json!({
         "idempotency_key": idempotency_key,
@@ -317,7 +335,7 @@ async fn rejected_key_prevents_action() {
         "expiration_rfc": expiration_rfc,
     });
 
-    let response = &app.post_publish_newsletter(&newsletter_request_body).await;
+    let response = app.post_publish_newsletter(&newsletter_request_body).await;
     assert_is_redirect_to(&response, "/admin/newsletter");
 
     let html_page = app.get_publish_newsletter_html().await;
@@ -345,7 +363,7 @@ async fn rejected_key_prevents_action() {
         "expiration_rfc": expiration_rfc,
     });
 
-    let response = &app.post_publish_newsletter(&newsletter_request_body).await;
+    let response = app.post_publish_newsletter(&newsletter_request_body).await;
     assert_is_redirect_to(&response, "/admin/newsletter");
 
     assert_eq!(

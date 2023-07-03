@@ -84,6 +84,7 @@ pub async fn publish_newsletter(
     )
     .await
     .map_err(e500)?;
+
     success_message().send();
     Ok(response)
 }
