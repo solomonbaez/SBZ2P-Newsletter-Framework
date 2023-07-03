@@ -243,16 +243,7 @@ async fn idempotency_expiration_prevents_queries() {
     });
 
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
-    assert_is_redirect_to(&response, "/admin/newsletter");
-
-    let html_page = app.get_publish_newsletter_html().await;
-    assert_eq!(
-        false,
-        html_page.contains(
-            "<p><i>The newsletter issue has been accepted -> \
-        emails will be delivered shortly.</i></p>"
-        )
-    );
+    assert_eq!(response.status().as_u16(), 500);
 }
 
 #[tokio::test]

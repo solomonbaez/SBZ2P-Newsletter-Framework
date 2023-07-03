@@ -80,7 +80,7 @@ pub async fn save_response(
         h
     };
 
-    sqlx::query_unchecked!(
+    let updated_response = sqlx::query_unchecked!(
         r#"
         UPDATE idempotency
         SET 
@@ -105,8 +105,12 @@ pub async fn save_response(
 
     transaction.commit().await?;
 
-    let http_response = response_head.set_body(body).map_into_boxed_body();
-    Ok(http_response)
+    if updated_response > 0 {
+        let http_response = response_head.set_body(body).map_into_boxed_body();
+        Ok(http_response)
+    } else {
+        Err(anyhow::anyhow!("The idempotency key has expired."))
+    }
 }
 
 #[allow(clippy::large_enum_variant)]
