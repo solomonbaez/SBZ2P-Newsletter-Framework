@@ -88,3 +88,33 @@ h3 {
     float: right;
     margin-right: 30px;
 }
+
+.blog-post {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #f2f2f2;
+    border-radius: 5px;
+}
+
+.blog-post h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.blog-post p {
+    margin-bottom: 10px;
+}
+
+.blog-post a {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.blog-post a:hove {
+    background-color: #0056b3;
+}
