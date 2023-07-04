@@ -89,6 +89,27 @@ h3 {
     margin-right: 30px;
 }
 
+nav u1 {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+nav u1 li {
+    margin-right: 20px;
+}
+
+nav u1 li a {
+    color: #777;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+nav u1 li a:hover {
+    color: #333;
+}
+
 .blog-post {
     margin-bottom: 20px;
     padding: 20px;
