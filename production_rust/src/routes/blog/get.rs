@@ -1,9 +1,15 @@
 use actix_web::http::header::ContentType;
 use actix_web::HttpResponse;
+use actix_web_flash_messages::IncomingFlashMessages;
+use std::fmt::Write;
 
-// TODO(): Need to add actix static file middleware for stylesheet/js
-pub async fn blog() -> HttpResponse {
-    HttpResponse::Ok()
+pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse, actix_web::Error> {
+    let mut msg_html = String::new();
+    for m in flash_messages.iter() {
+        writeln!(msg_html, "<p><i>{}</i></p>", m.content()).unwrap();
+    }
+
+    Ok(HttpResponse::Ok()
         .content_type(ContentType::html())
         .body(format!(
             r#"
@@ -113,6 +119,7 @@ pub async fn blog() -> HttpResponse {
     <main>
         <section>
             <h2>Welcome to my Blog!</h2>
+            {msg_html}
         </section>
         <section>
             <div class = "blog-post">
@@ -133,5 +140,5 @@ pub async fn blog() -> HttpResponse {
     </footer>
 </body>
 </html>"#
-        ))
+        )))
 }
