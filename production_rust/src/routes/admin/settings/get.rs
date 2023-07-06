@@ -121,24 +121,21 @@ pub async fn manage_settings_form(
         {msg_html}
         <form action="/admin/settings" method="post">
             <div class="input-group">
-                <label for="idempotency-key">Key:</label>
-                <input type="password" 
-                    id="idempotency-key"
-                    name="idempotency-key"
+                <label for="idempotency_key">Key:</label>
+                <input type="text" 
+                    id="idempotency_key"
+                    name="idempotency_key"
                     placeholder="Enter an idempotency key"
                 >
-                <button type="button" 
-                    id="idempotency-toggle" 
-                    onclick="togglePasswordVisibility('idempotency')"
-                >Show</button>
             </div>
             <div class="button-container">   
-                <button type="button">Revoke</button>
-                <button type="button">Restore</button>
+                <button type="submit">Restore</button>
+                <button type="submit">Revoke</button>
+                <input type="hidden" id="validity_input" name="validity">
                 <a href="/admin/dashboard"><button type="button">Back</button>
             </div>
         </form>
 </body>
 </html>"#,
-        ))) // need to add specific functions/pathways to push T/F boolean through to post on Revoke/Restore
+        )))
 }

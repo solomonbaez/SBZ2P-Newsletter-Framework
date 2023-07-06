@@ -1,10 +1,12 @@
 use actix_web::http::header::ContentType;
 use actix_web::HttpResponse;
 
+// TODO(): Need to add actix static file middleware for stylesheet/js
 pub async fn blog() -> HttpResponse {
     HttpResponse::Ok()
         .content_type(ContentType::html())
-        .body(format!(r#"
+        .body(format!(
+            r#"
         <!DOCTYPE html>
 <html lang="en">
 <head>
