@@ -1,15 +1,10 @@
 use crate::authentication::UserId;
 use crate::idempotency::IdempotencyKey;
-use crate::utils::{e400, e500, see_other};
+use crate::utils::{e400, see_other};
 use actix_web::{web, HttpResponse};
 use actix_web_flash_messages::FlashMessage;
-use anyhow::Context;
 use sqlx::PgPool;
 use uuid::Uuid;
-
-fn success_message() -> FlashMessage {
-    FlashMessage::info("The key state has been changed.")
-}
 
 #[allow(dead_code)]
 #[derive(serde::Deserialize)]
@@ -37,13 +32,16 @@ pub async fn change_key_state(
 
     let idempotency_key: IdempotencyKey = idempotency_key.try_into().map_err(e400)?;
 
-    key_state(*user_id, idempotency_key, &connection_pool, &validity)
-        .await
-        .context("Failed to change key state")
-        .map_err(e500)?;
+    match key_state(*user_id, idempotency_key, &connection_pool, &validity).await {
+        Ok(_) => {
+            FlashMessage::info("The key state has been changed.").send();
+        }
+        Err(_) => {
+            FlashMessage::error("Failed to change the key state.").send();
+        }
+    }
 
     let response = see_other("/admin/settings");
-    success_message().send();
     Ok(response)
 }
 
