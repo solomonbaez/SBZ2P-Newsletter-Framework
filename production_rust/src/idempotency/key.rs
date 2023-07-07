@@ -1,3 +1,5 @@
+use actix_web_flash_messages::FlashMessage;
+
 #[derive(Debug)]
 pub struct IdempotencyKey(String);
 
@@ -6,7 +8,10 @@ impl TryFrom<String> for IdempotencyKey {
 
     fn try_from(s: String) -> Result<Self, Self::Error> {
         if s.is_empty() {
-            anyhow::bail!("The idempotency key cannot be empty");
+            // hard reset option:
+            // anyhow::bail!("The idempotency key cannot be empty");
+            FlashMessage::error("The idempotency key cannot be empty!").send();
+            return Err(anyhow::anyhow!("The idempotency key cannot be empty!"));
         }
         Ok(Self(s))
     }
