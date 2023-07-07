@@ -365,3 +365,28 @@ async fn rejected_key_prevents_action() {
         )
     );
 }
+
+#[tokio::test]
+async fn invalid_key_prevents_action() {
+    let app = spawn_app().await;
+    create_confirmed_subscriber(&app).await;
+    app.test_user.login(&app).await;
+
+    Mock::given(path("/email"))
+        .and(method("POST"))
+        .respond_with(ResponseTemplate::new(500))
+        .expect(0)
+        .mount(&app.email_server)
+        .await;
+
+    let settings_request_body = serde_json::json!({
+        "idempotency_key": "",
+        "validity": "1",
+    });
+
+    let response = app.post_manage_settings(&settings_request_body).await;
+    assert_eq!(response.status().as_u16(), 400);
+
+    let html_page = app.get_manage_settings_html().await;
+    assert!(html_page.contains("The idempotency key cannot be empty!"));
+}
