@@ -193,6 +193,7 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
 
 <footer>
     <p>&copy; 2023 Solomon Baez</p>
+    <p><a href="/login">admin login</a></p>
 </footer>
 
 </html>"#
