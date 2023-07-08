@@ -178,12 +178,10 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
         <h2>My Skills.</h2>
         <div class="skill-row">
             <img class="python-img" src="https://i.giphy.com/media/E4kjYvAnTjh45ML3TO/giphy.webp" alt="python-img">
-            <h3><strong>Programming</strong>: <a href="https://github.com/solomonbaez">My GitHub</a></h3>
+            <h3><strong>Programming</strong>: </h3>
             <p>Python; Rust; PostgresSQL; MySQL</p>
             <br>
-            <h3><strong>Skills</strong>: <a
-            href="https://www.linkedin.com/in/solomon-james-baez-9b45a2208?trk=people-guest_people_search-card">
-            My Linkedin</a></h3>
+            <h3><strong>Skills</strong>: </h3>
             <p>Data Science/Engineering</p>
             <p>Engineering Product Design</p>
             <p>Engineering Product Commercialization</p>
@@ -196,6 +194,153 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
     <p><a href="/login">admin login</a></p>
 </footer>
 
+</html>"#
+        )))
+}
+
+pub async fn contact_me(
+    flash_messages: IncomingFlashMessages,
+) -> Result<HttpResponse, actix_web::Error> {
+    let mut msg_html = String::new();
+    for m in flash_messages.iter() {
+        writeln!(msg_html, "<p><i>{}</i></p>", m.content()).unwrap();
+    }
+
+    Ok(HttpResponse::Ok()
+        .content_type(ContentType::html())
+        .body(format!(
+            r#"
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
+    <title>Contact Me</title>
+    <style>
+        body {{
+            /* background-color: #E4F9F5; */
+            margin: 0;
+            text-align: center;
+            font-family: "Merriweather", serif;
+        }}
+        
+        hr {{
+            border: dotted #EAF6F6 6px;
+            border-bottom: none;
+            width: 50%;
+            margin: 100px auto;
+        }}
+        
+        h1 {{
+            color: #66BFBF;
+            font-size: 5.625rem;
+            margin: 50px auto 0 auto;
+            font-family: "Sacramento", cursive;
+        }}
+    
+        h2 {{
+            color: #66BFBF;
+            font-size: 2.5rem;
+            font-family: "Montserrat", sans-serif;
+            font-weight: normal;
+        }}
+        
+        h3 {{
+            color: #11999E;
+            font-family: "Montserrat", sans-serif;
+        }}
+       
+        nav u1 {{
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }}
+        
+        nva u1 {{
+            margin-top: 20px
+        }}
+
+        nav u1 li {{
+            margin-right: 20px;
+        }}
+        
+        nav u1 li a {{
+            color: #777;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }}
+        
+        nav u1 li a:hover {{
+            color: #333;
+        }}
+        .blog-post {{
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f2f2f2;
+            border-radius: 5px;
+        }}
+        
+        .blog-post h3 {{
+            font-size: 24px;
+            margin-bottom: 10px;
+        }}
+        
+        .blog-post p {{
+            margin-bottom: 10px;
+        }}
+        
+        .blog-post a {{
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }}
+        
+        .blog-post a:hove {{
+            background-color: #0056b3;
+        }}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <u1>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/changes">Changelogs</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </u1>
+        </nav>
+    </header>
+        
+    <main>
+        <section>
+            <h2>Contact Me</h2>
+            {msg_html}
+        </section>
+        <section>
+            <div class = "blog-post">
+                <h3>Work Links</h3>
+                <br>
+                <p><a href="https://github.com/solomonbaez">My GitHub</a><p>
+                <br>
+                <p><a href="https://www.linkedin.com/in/solomonbaez">My Linkedin</a></p>
+                <br>
+                <p><a href="https://fishbowlapp.com/fb/solomon-baez">My Fishbowl</a></p> 
+                <br>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Solomon Baez</p>
+        <p><a href="/login">admin login</a></p>
+    </footer>
+</body>
 </html>"#
         )))
 }
