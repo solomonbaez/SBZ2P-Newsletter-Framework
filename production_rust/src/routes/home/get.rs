@@ -142,7 +142,7 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
             <u1>
                 <li><a href="/home">Home</a></li>
                 <li><a href="/blog">Blog</a></li>
-                <li><a href="/changes">Changelogs</a></li>
+                <li><a href="/subscribe">Subscribe</a></li>
                 <li><a href="/contact">Contact</a></li>
             </u1>
         </nav>
@@ -274,23 +274,23 @@ pub async fn contact_me(
         nav u1 li a:hover {{
             color: #333;
         }}
-        .blog-post {{
+        .link-container {{
             margin-bottom: 20px;
             padding: 20px;
             background: #f2f2f2;
             border-radius: 5px;
         }}
         
-        .blog-post h3 {{
+        .link-container h3 {{
             font-size: 24px;
             margin-bottom: 10px;
         }}
         
-        .blog-post p {{
+        .link-container {{
             margin-bottom: 10px;
         }}
         
-        .blog-post a {{
+        .link-container a {{
             display: inline-block;
             padding: 8px 12px;
             background-color: #007bff;
@@ -298,9 +298,11 @@ pub async fn contact_me(
             text-decoration: none;
             border-radius: 3px;
             transition: background-color 0.3s ease;
+            width: 125px;
+            text-align: center;
         }}
         
-        .blog-post a:hove {{
+        .link-container a:hove {{
             background-color: #0056b3;
         }}
     </style>
@@ -311,7 +313,7 @@ pub async fn contact_me(
             <u1>
                 <li><a href="/home">Home</a></li>
                 <li><a href="/blog">Blog</a></li>
-                <li><a href="/changes">Changelogs</a></li>
+                <li><a href="/subscribe">Subscribe</a></li>
                 <li><a href="/contact">Contact</a></li>
             </u1>
         </nav>
@@ -323,7 +325,7 @@ pub async fn contact_me(
             {msg_html}
         </section>
         <section>
-            <div class = "blog-post">
+            <div class = "link-container">
                 <h3>Work Links</h3>
                 <br>
                 <p><a href="https://github.com/solomonbaez">My GitHub</a><p>

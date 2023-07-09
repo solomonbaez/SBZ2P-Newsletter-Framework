@@ -110,7 +110,7 @@ pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
             <u1>
                 <li><a href="/home">Home</a></li>
                 <li><a href="/blog">Blog</a></li>
-                <li><a href="/changes">Changelogs</a></li>
+                <li><a href="/subscribe">Subscribe</a></li>
                 <li><a href="/contact">Contact</a></li>
             </u1>
         </nav>
@@ -128,7 +128,7 @@ pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                 <a href="/blog/post-slug">Read More</a>
             </div>
             <div class = "blog-post">
-                <h3>Another Blog Post</h3>
+                <h3>Blog Post Title</h3>
                 <p>blog content summary.</p>
                 <a href="/blog/another-post-slug">Read More</a>
             </div>
