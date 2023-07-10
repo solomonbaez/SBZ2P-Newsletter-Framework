@@ -61,10 +61,6 @@ pub async fn get_subscribe(
             justify-content: center;
             margin-top: 20px;
         }}
-        
-        nva u1 {{
-            margin-top: 20px
-        }}
 
         nav u1 li {{
             margin-right: 20px;
@@ -79,36 +75,63 @@ pub async fn get_subscribe(
         nav u1 li a:hover {{
             color: #333;
         }}
-        .link-container {{
+
+        .center-container {{
+            display: flex;
+            width: 100%;
             margin-bottom: 20px;
             padding: 20px;
             background: #f2f2f2;
             border-radius: 5px;
         }}
-        
-        .link-container h3 {{
-            font-size: 24px;
-            margin-bottom: 10px;
+
+        .form-container {{
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 400px;
+            margin: 0 auto;
         }}
-        
-        .link-container {{
-            margin-bottom: 10px;
+
+        form {{
+            display: flex;
+            flex-direction: column;
         }}
-        
-        .link-container a {{
-            display: inline-block;
-            padding: 8px 12px;
+
+        label {{
+            margin-bottom: 10px;
+            color: #3B5323;
+        }}
+
+        input[type="text"], textarea {{
+            box-sizing: border-box
+            display: flex;
+            justify-content: center;
+            height: 20px;
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-bottom: 5px;
+        }}
+
+        button[type="submit"], button[type="button"] {{
+            box-sizing: border-box
+            display: flex;
+            justify-content: center;
+            padding: 10px 20px; 
+            border: 1px;
+            border-radius: 3px;
+            width: 200px;
+            cursor: pointer;
             background-color: #007bff;
             color: #fff;
-            text-decoration: none;
             border-radius: 3px;
             transition: background-color 0.3s ease;
-            width: 125px;
-            text-align: center;
         }}
-        
-        .link-container a:hove {{
-            background-color: #0056b3;
+
+        button:hover {{
+            background-color: #2A3F1B;
         }}
     </style>
 </head>
@@ -130,7 +153,20 @@ pub async fn get_subscribe(
             {msg_html}
         </section>
         <section>
-            <div class = "link-container">
+            <div class="center-container">
+                <div class="form-container">
+                    {msg_html}
+                    <form action="/subcriptions" method="post">
+                        <label>Email:<br>
+                            <input
+                                type="text"
+                                placeholder="enter your email"
+                                name = "email"
+                            >
+                        </label>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
             </div>
         </section>
     </main>

@@ -6,7 +6,7 @@ use wiremock::{Mock, ResponseTemplate};
 #[tokio::test]
 async fn subscribe_endpoint_is_accessable() {
     let app = spawn_app().await;
-    
+
     let html_page = app.get_subscribe_html().await;
     assert!(html_page.contains("<h2>Subscribe</h2>"));
 }

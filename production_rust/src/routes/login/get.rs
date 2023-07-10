@@ -89,7 +89,7 @@ pub async fn login_form(flash_messages: IncomingFlashMessages) -> HttpResponse {
                     color: #ffffff;
                     border: none;
                     border-radius: 3px;
-                    curson: pointer;
+                    cursor: pointer;
                 }}
 
                 button:hover {{

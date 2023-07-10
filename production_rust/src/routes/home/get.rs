@@ -290,20 +290,24 @@ pub async fn contact_me(
             margin-bottom: 10px;
         }}
         
-        .link-container a {{
+        button[type="button"] {{
             display: inline-block;
             padding: 8px 12px;
+            justify-content: center;
+            padding: 10px 20px; 
+            border: 1px;
+            border-radius: 3px;
+            width: 150px;
+            cursor: pointer;
+            text-decoration: none;
             background-color: #007bff;
             color: #fff;
-            text-decoration: none;
             border-radius: 3px;
             transition: background-color 0.3s ease;
-            width: 125px;
-            text-align: center;
         }}
-        
-        .link-container a:hove {{
-            background-color: #0056b3;
+
+        button:hover {{
+            background-color: #2A3F1B;
         }}
     </style>
 </head>
@@ -328,11 +332,11 @@ pub async fn contact_me(
             <div class = "link-container">
                 <h3>Work Links</h3>
                 <br>
-                <p><a href="https://github.com/solomonbaez">My GitHub</a><p>
+                <p><a href="https://github.com/solomonbaez"><button type="button">My GitHub</button></a></p>
                 <br>
-                <p><a href="https://www.linkedin.com/in/solomonbaez">My Linkedin</a></p>
+                <p><a href="https://www.linkedin.com/in/solomonbaez"><button type="button">My Linkedin</button></a></p>
                 <br>
-                <p><a href="https://fishbowlapp.com/fb/solomon-baez">My Fishbowl</a></p> 
+                <p><a href="https://fishbowlapp.com/fb/solomon-baez"><button type="button">My Fishbowl</button></a></p>
                 <br>
             </div>
         </section>

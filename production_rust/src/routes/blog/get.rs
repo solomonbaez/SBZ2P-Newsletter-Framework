@@ -73,6 +73,7 @@ pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
         nav u1 li a:hover {{
             color: #333;
         }}
+
         .blog-post {{
             margin-bottom: 20px;
             padding: 20px;
@@ -89,18 +90,24 @@ pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
             margin-bottom: 10px;
         }}
         
-        .blog-post a {{
+        button[type="button"] {{
             display: inline-block;
             padding: 8px 12px;
+            justify-content: center;
+            padding: 10px 20px; 
+            border: 1px;
+            border-radius: 3px;
+            width: 125px;
+            cursor: pointer;
+            text-decoration: none;
             background-color: #007bff;
             color: #fff;
-            text-decoration: none;
             border-radius: 3px;
             transition: background-color 0.3s ease;
         }}
-        
-        .blog-post a:hove {{
-            background-color: #0056b3;
+
+        button:hover {{
+            background-color: #2A3F1B;
         }}
     </style>
 </head>
@@ -125,12 +132,12 @@ pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
             <div class = "blog-post">
                 <h3>Blog Post Title</h3>
                 <p>blog content summary.</p>
-                <a href="/blog/post-slug">Read More</a>
+                <a href="/blog/post-slub"><button type="button">Read More</button></a>
             </div>
             <div class = "blog-post">
                 <h3>Blog Post Title</h3>
                 <p>blog content summary.</p>
-                <a href="/blog/another-post-slug">Read More</a>
+                <a href="/blog/post-slub"><button type="button">Read More</button></a>
             </div>
         </section>
     </main>
