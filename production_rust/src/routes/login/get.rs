@@ -7,7 +7,7 @@ pub async fn login_form(flash_messages: IncomingFlashMessages) -> HttpResponse {
     for m in flash_messages.iter() {
         writeln!(error_html, "<p><i>{}</i></p>", m.content()).unwrap();
     }
-
+    // add a "back" nav to return to /home
     HttpResponse::Ok()
         .content_type(ContentType::html())
         .body(format!(
@@ -18,27 +18,50 @@ pub async fn login_form(flash_messages: IncomingFlashMessages) -> HttpResponse {
         <title>Login</title>
         <style>
                 body {{
-                    font-family: Arial, sans-serif;
+                    /* background-color: #E4F9F5; */
                     margin: 0;
-                    background-color: #3B5323;
+                    text-align: center;
+                    font-family: "Merriweather", serif;
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     height: 100vh;
                 }}
-
-                .form-container {{
-                    background-color: #F8F8F8;
+                
+                hr {{
+                    border: dotted #EAF6F6 6px;
+                    border-bottom: none;
+                    width: 50%;
+                    margin: 100px auto;
+                }}
+                
+                h1, h2 {{
+                    color: #66BFBF;
+                    font-size: 2.5rem;
+                    font-family: "Montserrat", sans-serif;
+                    font-weight: normal;
+                }}
+                
+                h3 {{
+                    color: #11999E;
+                    font-family: "Montserrat", sans-serif;
+                }}
+            
+                .center-container {{
+                    display: flex;
+                    width: 100%;
+                    margin-bottom: 20px;
                     padding: 20px;
+                    background: #f2f2f2;
                     border-radius: 5px;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                    max-width: 400px;
-                    margin: 0 auto;
                 }}
 
-                h1 {{
-                    text-align: center;
-                    color: #3B5323;
+                .form-container {{
+                    background-color: #f2f2f2;
+                    padding: 20px;
+                    border-radius: 5px;
+                    max-width: 400px;
+                    margin: 0 auto;
                 }}
 
                 form {{
@@ -75,26 +98,29 @@ pub async fn login_form(flash_messages: IncomingFlashMessages) -> HttpResponse {
         </style>
     </head>
     <body>
-        <div class="form-container">
-            <h1>Admin Login</h1>
-            {error_html}
-            <form action="/login" method="post">
-                <label>Username:<br>
-                    <input
-                        type="text"
-                        placeholder="Enter Username"
-                        name = "username"
-                    >
-                </label>
-                <label>Password:<br>
-                    <input
-                        type="password"
-                        placeholder="Enter Password"
-                        name="password"
-                    >
-                </label>
-                <button type="submit">Login</button>
-            </form>
+        <div class="center-container">
+            <div class="form-container">
+                <h1>Admin Login</h1>
+                {error_html}
+                <form action="/login" method="post">
+                    <label>Username:<br>
+                        <input
+                            type="text"
+                            placeholder="Enter Username"
+                            name = "username"
+                        >
+                    </label>
+                    <label>Password:<br>
+                        <input
+                            type="password"
+                            placeholder="Enter Password"
+                            name="password"
+                        >
+                    </label>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+        </div>
     </body>
 </html>"#,
         ))

@@ -2,6 +2,15 @@ use crate::helpers::spawn_app;
 use wiremock::matchers::{method, path};
 use wiremock::{Mock, ResponseTemplate};
 
+// will be expanded to include flash message confirmation
+#[tokio::test]
+async fn subscribe_endpoint_is_accessable() {
+    let app = spawn_app().await;
+    
+    let html_page = app.get_subscribe_html().await;
+    assert!(html_page.contains("<h2>Subscribe</h2>"));
+}
+
 #[tokio::test] // valid form data returns 200
 async fn valid_subscribe_returns_200() {
     let app = spawn_app().await; // Future
