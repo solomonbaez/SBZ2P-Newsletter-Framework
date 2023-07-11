@@ -55,6 +55,12 @@ pub async fn get_subscribe(
                         color: #11999E;
                         font-family: "Montserrat", sans-serif;
                     }}
+                    
+                    p {{
+                        font-family: "Roboto", sans-serif;
+                        font-size: 16px;
+                        color: #ccc;
+                    }}
                    
                     nav ul {{
                         list-style: none;

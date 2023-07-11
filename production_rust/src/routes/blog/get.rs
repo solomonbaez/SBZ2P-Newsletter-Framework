@@ -54,6 +54,12 @@ pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                         font-family: "Montserrat", sans-serif;
                     }}
                     
+                    p {{
+                        font-family: "Roboto", sans-serif;
+                        font-size: 16px;
+                        color: #ccc;
+                    }}
+                    
                     nav ul {{
                         list-style: none;
                         display: flex;

@@ -53,9 +53,25 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                         animation: blink-animation 1.5s infinite;
                     }}
 
+                    h2::after {{
+                        content: "_";
+                        display: inline-block;
+                        width:6px;
+                        height: 40px;
+                        background-color: #111;
+                        animation: blink-animation 1.5s infinite;
+                    }}
+
                     h3 {{
                         color: #007bff;
                         font-family: "Montserrat", sans-serif;
+                    }}
+
+                    p {{
+                        font-family: "Roboto", sans-serif;
+                        font-size: 16px;
+                        color: #ccc;
+                        line-height: 1.6;
                     }}
                     
                     .skill-row {{
@@ -63,6 +79,19 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                         margin: 100px auto 100px auto;
                         text-align: left;
                         line-height: 2;
+                    }}
+
+                    .experience-row {{
+                        display: flex
+                        align-items: center;
+                        width: 50%;
+                        margin: 100px auto 100px auto;
+                        text-align: left;
+                        line-height: 2;
+                    }}
+
+                    .experience-row p {{
+                        font-size: 32 px;
                     }}
 
                     .top-container {{
@@ -77,9 +106,10 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                         padding: 50px 0px 20px;
                     }}
 
-                    .bio {{
+                    .profile-container {{
                         text-align: center;
                         width: 50%;
+                        margin: 0 auto;
                     }}
 
                     .work {{
@@ -97,12 +127,6 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                         position: absolute;
                         left: 300px;
                         bottom: 300px;
-                    }}
-
-                    .computer-img {{
-                        width: 30%;
-                        float: left;
-                        margin-right: 30px;
                     }}
 
                     .python-img {{
@@ -159,24 +183,23 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
 
             <div class="middle-container">
                 {msg_html}
-                <div class="profile">
-                    <h2>Hello.</h2>
+                <div class="profile-container">
+                    <h2>Hello</h2>
                     <p>I am a bioengineer and software developer with four years of research
-                        experience in medical device development at Oregon State University.
+                        experience in medical device software and product development 
+                        at Oregon State University.
                     </p>
-                    <p>I have recently taken a hiatus from PediaNourish LLC to gain more professional experience.</p>
                 </div>
                 <hr>
                 <div class="skills">
-                    <h2>My Experience.</h2>
-                    <div class="skill-row">
-                        <img class="computer-img" src="https://i.giphy.com/media/iIGT8Y1rOYhBpdHh1C/giphy.webp" alt="code-img">
-                        <p>2018-2018: Higgins Lab, OSU</p>
-                        <p>2018-2023: Higgins and Dallas Joint Lab, OSU</p>
-                        <p>2019-2023: PediaNourish LLC</p>
+                    <h2>My Experience</h2>
+                    <div class="experience-row">
+                        <p><strong style="color: #007bff;">2019-2023:</strong> PediaNourish LLC</p>
+                        <p><strong style="color: #007bff;">2018-2023:</strong> Higgins/Dallas Lab, OSU</p>
+                        <p><strong style="color: #007bff;">2018-2018:</strong> Higgins Lab, OSU</p>
                     </div>
                     <hr>
-                    <h2>My Skills.</h2>
+                    <h2>My Skills</h2>
                     <div class="skill-row">
                         <img class="python-img" src="https://i.giphy.com/media/E4kjYvAnTjh45ML3TO/giphy.webp" alt="python-img">
                         <h3><strong>Programming</strong>: </h3>
@@ -251,6 +274,12 @@ pub async fn contact_me(
                     h3 {{
                         color: #11999E;
                         font-family: "Montserrat", sans-serif;
+                    }}
+
+                    p {{
+                        font-family: "Roboto", sans-serif;
+                        font-size: 16px;
+                        color: #ccc;
                     }}
                    
                     nav ul {{
