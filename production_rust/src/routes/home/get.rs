@@ -11,190 +11,192 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
 
     Ok(HttpResponse::Ok()
         .content_type(ContentType::html())
-        .body(format!(r#"
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset ="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
-    <title>Solomon Baez</title>
-    <link rel ="stylesheet" type ="text/css" href ="./home/stylesheet.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Montserrat&family=Sacramento&display=swap" rel="stylesheet">
-    <style>
-        body {{
-            /* background-color: #E4F9F5; */
-            margin: 0;
-            text-align: center;
-            font-family: "Merriweather", serif;
-        }}
-        
-        .skill-row {{
-            width: 50%;
-            margin: 100px auto 100px auto;
-            text-align: left;
-            line-height: 2;
-        }}
-        
-        hr {{
-            border: dotted #EAF6F6 6px;
-            border-bottom: none;
-            width: 50%;
-            margin: 100px auto;
-        }}
-        
-        h1 {{
-            color: #66BFBF;
-            font-size: 5.625rem;
-            margin: 50px auto 0 auto;
-            font-family: "Sacramento", cursive;
-        }}
-       
-        h2 {{
-            color: #66BFBF;
-            font-size: 2.5rem;
-            font-family: "Montserrat", sans-serif;
-            font-weight: normal;
-        }}
-        
-        h3 {{
-            color: #11999E;
-            font-family: "Montserrat", sans-serif;
-        }}
-        
-        .top-container {{
-            background-color: #E4F9F5;
-            position: relative;
-            padding-top: 25px;
-            padding-bottom: 55px;
-        }}
-        
-        .bottom-container {{
-            background-color: #66BFBF
-            padding: 50px 0px 20px;
-        }}
-        
-        #pfp {{
-            padding-top: 25px;
-            border-radius: 100%;
-        }}
-        
-        .bio {{
-            text-align: center;
-            width: 50%;
-        }}
-        
-        /* inline, vs block display */
-        .work {{
-            color: grey;
-            text-decoration: underline;
-        }}
-        
-        .top-cloud{{
-            position: absolute;
-            right: 300px;
-            top: 50px;
-        }}
-        
-        .sub-cloud{{
-            position: absolute;
-            left: 300px;
-            bottom: 300px;
-        }}
-        
-        .computer-img {{
-            width: 30%;
-            float: left;
-            margin-right: 30px;
-        }}
-        .python-img {{
-            width: 50%;
-            float: right;
-            margin-right: 30px;
-        }}
-        
-        nav u1 {{
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }}
-        
-        nav u1 li {{
-            margin-right: 20px;
-        }}
-        
-        nav u1 li a {{
-            color: #777;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }}
-        
-        nav u1 li a:hover {{
-            color: #333;
-        }}
-    </style>           
-</head>
-<body>
-<header>
-        <nav>
-            <u1>
-                <li><a href="/home">Home</a></li>
-                <li><a href="/blog">Blog</a></li>
-                <li><a href="/subscribe">Subscribe</a></li>
-                <li><a href="/contact">Contact</a></li>
-            </u1>
-        </nav>
-</header>
-<br>
-<!-- content division element-->
-<div class="top-container">
-    <h1>I'm Solomon</h1>
-    <h3>Co-Founder and former CEO of <strong>PediaNourish LLC</strong></h3>
-    <h3><span class="work">Computer Scientist,</span>
-        <span class="work">Bioengineer</span></h3>
-</div>
-</body>
-<div class="middle-container">
-    {msg_html}
-    <div class="profile">
-        <h2>Hello.</h2>
-        <p>I am a bioengineer and software developer with four years of research
-            experience in medical device development at Oregon State University.
-        </p>
-        <p>I have recently taken a hiatus from PediaNourish LLC to gain more professional experience.</p>
-    </div>
-    <hr>
-    <div class="skills">
-            <h2>My Experience.</h2>
-        <div class="skill-row">
-            <img class="computer-img" src="https://i.giphy.com/media/iIGT8Y1rOYhBpdHh1C/giphy.webp" alt="code-img">
-            <p>2018-2018: Higgins Lab, OSU</p>
-            <p>2018-2023: Higgins and Dallas Joint Lab, OSU</p>
-            <p>2019-2023: PediaNourish LLC</p>
-        </div>
-        <hr>
-        <h2>My Skills.</h2>
-        <div class="skill-row">
-            <img class="python-img" src="https://i.giphy.com/media/E4kjYvAnTjh45ML3TO/giphy.webp" alt="python-img">
-            <h3><strong>Programming</strong>: </h3>
-            <p>Python; Rust; PostgresSQL; MySQL</p>
+        .body(format!(
+            r#"
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Solomon Baez</title>
+                <style>
+                    body {{
+                        margin: 0;
+                        text-align: center;
+                        font-family: "Merriweather", serif;
+                        background-color: #111;
+                        color: #fff;
+                    }}
+
+                    hr {{
+                        border: dotted #444 6px;
+                        border-bottom: none;
+                        width: 50%;
+                        margin: 100px auto;
+                    }}
+
+                    h1 {{
+                        color: #007bff;
+                        font-size: 5.625rem;
+                        margin: 50px auto 0 auto;
+                        font-family: "Montserrat", sans-serif;
+                        font-weight: bold;
+                        display: inline-block;
+                    }}
+
+                    h1::after {{
+                        content: "_";
+                        display: inline-block;
+                        width: 6px;
+                        height: 40px;
+                        background-color: #222;
+                        animation: blink-animation 1.5s infinite;
+                    }}
+
+                    h3 {{
+                        color: #007bff;
+                        font-family: "Montserrat", sans-serif;
+                    }}
+                    
+                    .skill-row {{
+                        width: 50%;
+                        margin: 100px auto 100px auto;
+                        text-align: left;
+                        line-height: 2;
+                    }}
+
+                    .top-container {{
+                        background-color: #222;
+                        position: relative;
+                        padding-top: 25px;
+                        padding-bottom: 55px;
+                    }}
+
+                    .bottom-container {{
+                        background-color: #111;
+                        padding: 50px 0px 20px;
+                    }}
+
+                    .bio {{
+                        text-align: center;
+                        width: 50%;
+                    }}
+
+                    .work {{
+                        color: grey;
+                        text-decoration: underline;
+                    }}
+
+                    .top-cloud {{
+                        position: absolute;
+                        right: 300px;
+                        top: 50px;
+                    }}
+
+                    .sub-cloud {{
+                        position: absolute;
+                        left: 300px;
+                        bottom: 300px;
+                    }}
+
+                    .computer-img {{
+                        width: 30%;
+                        float: left;
+                        margin-right: 30px;
+                    }}
+
+                    .python-img {{
+                        width: 50%;
+                        float: right;
+                        margin-right: 30px;
+                    }}
+
+                    nav ul {{
+                        list-style: none;
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 20px;
+                    }}
+                    
+                    nav ul li {{
+                        margin-right: 20px;
+                    }}
+                    
+                    nav ul li a {{
+                        color: #fff;
+                        text-decoration: none;
+                        transition: color 0.3s ease;
+                    }}
+                    
+                    nav ul li a:hover {{
+                        color: #007bff;
+                    }}
+
+                    @keyframes blink-animation {{
+                        0% {{ opacity: 1; }}
+                        50% {{ opacity: 0; }}
+                        100% {{ opacity: 1; }}
+                    }}
+                </style>
+            </head>
+            <body>
+            <header>
+                <nav>
+                    <ul>
+                        <li><a href="/home">Home</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/subscribe">Subscribe</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </header>
             <br>
-            <h3><strong>Skills</strong>: </h3>
-            <p>Data Science/Engineering</p>
-            <p>Engineering Product Design</p>
-            <p>Engineering Product Commercialization</p>
-        </div>
-    </div>
-</div>
+            <div class="top-container">
+                <h1>I'm Solomon</h1>
+                <h3>Co-Founder and former CEO of <strong>PediaNourish LLC</strong></h3>
+                <h3><span class="work">Computer Scientist,</span> <span class="work">Bioengineer</span></h3>
+            </div>
 
-<footer>
-    <p>&copy; 2023 Solomon Baez</p>
-    <p><a href="/login">admin login</a></p>
-</footer>
+            <div class="middle-container">
+                {msg_html}
+                <div class="profile">
+                    <h2>Hello.</h2>
+                    <p>I am a bioengineer and software developer with four years of research
+                        experience in medical device development at Oregon State University.
+                    </p>
+                    <p>I have recently taken a hiatus from PediaNourish LLC to gain more professional experience.</p>
+                </div>
+                <hr>
+                <div class="skills">
+                    <h2>My Experience.</h2>
+                    <div class="skill-row">
+                        <img class="computer-img" src="https://i.giphy.com/media/iIGT8Y1rOYhBpdHh1C/giphy.webp" alt="code-img">
+                        <p>2018-2018: Higgins Lab, OSU</p>
+                        <p>2018-2023: Higgins and Dallas Joint Lab, OSU</p>
+                        <p>2019-2023: PediaNourish LLC</p>
+                    </div>
+                    <hr>
+                    <h2>My Skills.</h2>
+                    <div class="skill-row">
+                        <img class="python-img" src="https://i.giphy.com/media/E4kjYvAnTjh45ML3TO/giphy.webp" alt="python-img">
+                        <h3><strong>Programming</strong>: </h3>
+                        <p>Python; Rust; PostgresSQL; MySQL</p>
+                        <br>
+                        <h3><strong>Skills</strong>: </h3>
+                        <p>Data Science/Engineering</p>
+                        <p>Engineering Product Design</p>
+                        <p>Engineering Product Commercialization</p>
+                    </div>
+                </div>
+            </div>
 
-</html>"#
+            <footer>
+                <p>&copy; 2023 Solomon Baez</p>
+                <p><a href="/login">admin login</a></p>
+            </footer>
+
+            </body>
+            </html>"#
         )))
 }
 
@@ -346,7 +348,6 @@ pub async fn contact_me(
                     <p><a href="/login">admin login</a></p>
                 </footer>
             </body>
-            </html>"
-            "#
+            </html>"#
         )))
 }
