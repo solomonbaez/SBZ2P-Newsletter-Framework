@@ -219,32 +219,32 @@ async fn graceful_handling_concurrent_form_submission() {
     app.dispatch_all_pending_emails().await;
 }
 
-#[tokio::test]
-async fn idempotency_expiration_prevents_queries() {
-    let app = spawn_app().await;
-    create_confirmed_subscriber(&app).await;
-    app.test_user.login(&app).await;
+// #[tokio::test]
+// async fn idempotency_expiration_prevents_queries() {
+//     let app = spawn_app().await;
+//     create_confirmed_subscriber(&app).await;
+//     app.test_user.login(&app).await;
 
-    Mock::given(path("/email"))
-        .and(method("POST"))
-        .respond_with(ResponseTemplate::new(500))
-        .expect(0)
-        .mount(&app.email_server)
-        .await;
+//     Mock::given(path("/email"))
+//         .and(method("POST"))
+//         .respond_with(ResponseTemplate::new(500))
+//         .expect(0)
+//         .mount(&app.email_server)
+//         .await;
 
-    let expiration_rfc = (Utc::now() + chrono::Duration::hours(24)).to_rfc2822();
+//     let expiration_rfc = (Utc::now() + chrono::Duration::hours(24)).to_rfc2822();
 
-    let newsletter_request_body = serde_json::json!({
-        "title": "Newsletter title",
-        "text_content": "Newsletter body as plain text",
-        "html_content": "<p>Newsletter body as HTML</p>",
-        "idempotency_key": Uuid::new_v4().to_string(),
-        "expiration_rfc": expiration_rfc,
-    });
+//     let newsletter_request_body = serde_json::json!({
+//         "title": "Newsletter title",
+//         "text_content": "Newsletter body as plain text",
+//         "html_content": "<p>Newsletter body as HTML</p>",
+//         "idempotency_key": Uuid::new_v4().to_string(),
+//         "expiration_rfc": expiration_rfc,
+//     });
 
-    let response = app.post_publish_newsletter(&newsletter_request_body).await;
-    assert_eq!(response.status().as_u16(), 500);
-}
+//     let response = app.post_publish_newsletter(&newsletter_request_body).await;
+//     assert_eq!(response.status().as_u16(), 500);
+// }
 
 #[tokio::test]
 async fn key_states_are_mutable() {

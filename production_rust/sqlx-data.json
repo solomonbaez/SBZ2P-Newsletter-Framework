@@ -1,30 +1,6 @@
 {
   "db": "PostgreSQL",
-  "06f83a51e9d2ca842dc0d6947ad39d9be966636700de58d404d8e1471a260c9a": {
-    "describe": {
-      "columns": [
-        {
-          "name": "newsletter_issue_id",
-          "ordinal": 0,
-          "type_info": "Uuid"
-        },
-        {
-          "name": "subscriber_email",
-          "ordinal": 1,
-          "type_info": "Text"
-        }
-      ],
-      "nullable": [
-        false,
-        false
-      ],
-      "parameters": {
-        "Left": []
-      }
-    },
-    "query": "\n        SELECT newsletter_issue_id, subscriber_email\n        FROM issue_delivery_queue\n        FOR UPDATE\n        SKIP LOCKED\n        LIMIT 1\n        "
-  },
-  "0b9b4e670544d805fd88f049d48505c1a40292020c5d039b7a80e5ee390b8794": {
+  "03fa06b33cb81d8b36f68e0b8273a8afe722bcefc15cb0153c5ade68fae75325": {
     "describe": {
       "columns": [
         {
@@ -74,12 +50,35 @@
       "parameters": {
         "Left": [
           "Uuid",
-          "Text",
-          "Timestamptz"
+          "Text"
         ]
       }
     },
-    "query": "\n        SELECT \n            response_status_code as \"response_status_code!\",\n            response_headers as \"response_headers!: Vec<HeaderPairRecord>\",\n            response_body as \"response_body!\"\n        FROM idempotency\n        WHERE\n            user_id = $1 \n            AND idempotency_key = $2\n            AND created_at >= $3\n        "
+    "query": "\n        SELECT \n            response_status_code as \"response_status_code!\",\n            response_headers as \"response_headers!: Vec<HeaderPairRecord>\",\n            response_body as \"response_body!\"\n        FROM idempotency\n        WHERE\n            user_id = $1 \n            AND idempotency_key = $2\n        "
+  },
+  "06f83a51e9d2ca842dc0d6947ad39d9be966636700de58d404d8e1471a260c9a": {
+    "describe": {
+      "columns": [
+        {
+          "name": "newsletter_issue_id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "subscriber_email",
+          "ordinal": 1,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "\n        SELECT newsletter_issue_id, subscriber_email\n        FROM issue_delivery_queue\n        FOR UPDATE\n        SKIP LOCKED\n        LIMIT 1\n        "
   },
   "1a66539537c71a52ffacfe03719f39c0e6b174a6cecccbfba7750371af8cd19d": {
     "describe": {
@@ -197,46 +196,6 @@
     },
     "query": "\n        SELECT username FROM users WHERE user_id = $1\n        "
   },
-  "60f2e69d7b82dc6ba988365286266d1b87d6fe8e7b523940d32f526cf77700d2": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Uuid",
-          "Text",
-          "Timestamptz",
-          "Int2",
-          {
-            "Custom": {
-              "kind": {
-                "Array": {
-                  "Custom": {
-                    "kind": {
-                      "Composite": [
-                        [
-                          "name",
-                          "Text"
-                        ],
-                        [
-                          "value",
-                          "Bytea"
-                        ]
-                      ]
-                    },
-                    "name": "header_pair"
-                  }
-                }
-              },
-              "name": "_header_pair"
-            }
-          },
-          "Bytea"
-        ]
-      }
-    },
-    "query": "\n        UPDATE idempotency\n        SET \n            response_status_code = $4,\n            response_headers = $5,\n            response_body = $6\n        WHERE \n            user_id = $1 \n            AND idempotency_key = $2\n            AND created_at >= $3\n        "
-  },
   "774c1b204b2732c27870a293422d36e93e11b1d43b5d6568069e97f27e201d96": {
     "describe": {
       "columns": [],
@@ -264,20 +223,6 @@
       }
     },
     "query": "\n        INSERT INTO newsletter_issues (\n            newsletter_issue_id,\n            title,\n            text_content,\n            html_content,\n            published_at\n        )\n        VALUES ($1, $2, $3, $4, now())\n        "
-  },
-  "7ef4f6c396270fb07645811a1d0c9cbe61707437a03980bd8612c6ad4ebfedaa": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Uuid",
-          "Text",
-          "Timestamptz"
-        ]
-      }
-    },
-    "query": "\n        DELETE FROM idempotency\n        WHERE\n            user_id = $1\n            AND idempotency_key = $2\n            AND created_at < $3\n        "
   },
   "9341e1139459e8f21883417b57ca8421442532b40de510bae5880a24476753ef": {
     "describe": {
@@ -337,6 +282,45 @@
       }
     },
     "query": "SELECT subscriber_id FROM subscription_tokens WHERE subscription_token = $1"
+  },
+  "db3b2400722d6d1e15078aad05dd6b38f3c4722de998621071169e4d4a7fd041": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Text",
+          "Int2",
+          {
+            "Custom": {
+              "kind": {
+                "Array": {
+                  "Custom": {
+                    "kind": {
+                      "Composite": [
+                        [
+                          "name",
+                          "Text"
+                        ],
+                        [
+                          "value",
+                          "Bytea"
+                        ]
+                      ]
+                    },
+                    "name": "header_pair"
+                  }
+                }
+              },
+              "name": "_header_pair"
+            }
+          },
+          "Bytea"
+        ]
+      }
+    },
+    "query": "\n        UPDATE idempotency\n        SET \n            response_status_code = $3,\n            response_headers = $4,\n            response_body = $5\n        WHERE \n            user_id = $1 \n            AND idempotency_key = $2\n        "
   },
   "e6822c9e162eabc20338cc27d51a8e80578803ec1589c234d93c3919d14a96a6": {
     "describe": {

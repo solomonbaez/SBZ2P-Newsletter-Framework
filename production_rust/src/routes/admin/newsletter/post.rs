@@ -4,7 +4,6 @@ use crate::utils::{e400, e500, see_other};
 use actix_web::{web, HttpResponse};
 use actix_web_flash_messages::FlashMessage;
 use anyhow::Context;
-use chrono::DateTime;
 use sqlx::{PgPool, Postgres, Transaction};
 use uuid::Uuid;
 
@@ -22,7 +21,6 @@ pub struct FormData {
     text_content: String,
     html_content: String,
     idempotency_key: String,
-    expiration_rfc: String,
 }
 
 #[tracing::instrument(
@@ -41,22 +39,12 @@ pub async fn publish_newsletter(
         text_content,
         html_content,
         idempotency_key,
-        expiration_rfc,
     } = form.0;
     let idempotency_key: IdempotencyKey = idempotency_key.try_into().map_err(e400)?;
 
-    let expiration_utc =
-        DateTime::parse_from_rfc2822(&expiration_rfc).expect("Could not validate timestamp.");
-
-    // need to properly convert the timestamp to UTC
-    let mut transaction = match try_processing(
-        &connection_pool,
-        &idempotency_key,
-        *user_id,
-        expiration_utc.into(),
-    )
-    .await
-    .map_err(e500)?
+    let mut transaction = match try_processing(&connection_pool, &idempotency_key, *user_id)
+        .await
+        .map_err(e500)?
     {
         NextAction::StartProcessing(t) => t,
         NextAction::ReturnSavedResponse(saved_response) => {
@@ -75,15 +63,9 @@ pub async fn publish_newsletter(
         .map_err(e500)?;
 
     let response = see_other("/admin/newsletter");
-    let response = save_response(
-        transaction,
-        &idempotency_key,
-        *user_id,
-        response,
-        expiration_utc.into(),
-    )
-    .await
-    .map_err(e500)?;
+    let response = save_response(transaction, &idempotency_key, *user_id, response)
+        .await
+        .map_err(e500)?;
 
     success_message().send();
     Ok(response)

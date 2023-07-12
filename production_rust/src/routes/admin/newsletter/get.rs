@@ -103,18 +103,18 @@ pub async fn new_newsletter_form(
             </div>
             <br>
             <div class="input-group">
-                <label for="text-submission"> Text Submission:</label> 
-                <textarea id="text-submission" 
-                    name="text-submission" 
+                <label for="text_content"> Text Submission:</label> 
+                <textarea id="text_content" 
+                    name="text_content" 
                     placeholder="Enter the content in plain text" 
                     class="input-group">
                 </textarea>
             </div>
             <br>
             <div class="input-group">
-                <label for="html-submission"> HTML Submission:</label> 
-                <textarea id="html-submission" 
-                    name="html-submission" 
+                <label for="html_content"> HTML Submission:</label> 
+                <textarea id="html_content" 
+                    name="html_content" 
                     placeholder="Enter the content in HTML format" 
                     class="input-group">
                 </textarea>
