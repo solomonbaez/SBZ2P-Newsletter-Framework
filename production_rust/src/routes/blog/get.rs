@@ -1,7 +1,10 @@
 use actix_web::http::header::ContentType;
-use actix_web::HttpResponse;
+use actix_web::{web, HttpResponse};
 use actix_web_flash_messages::IncomingFlashMessages;
+use sqlx::PgPool;
 use std::fmt::Write;
+// use chrono::NaiveDateTime;
+use uuid::Uuid;
 
 pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse, actix_web::Error> {
     let mut msg_html = String::new();
@@ -160,4 +163,44 @@ pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
             </html>
             "#
         )))
+}
+
+#[allow(dead_code)]
+pub struct NewsletterPost {
+    pub id: Uuid,
+    pub title: String,
+    pub text_content: String,
+    pub html_content: String,
+    pub published_at: String,
+}
+
+pub async fn get_recent_newsletters(
+    connection_pool: web::Data<PgPool>,
+) -> Result<Vec<NewsletterPost>, sqlx::Error> {
+    const RECENT_POSTS: i64 = 2;
+
+    let query = sqlx::query!(
+        r#"
+        SELECT newsletter_issue_id, title, text_content, html_content, published_at
+        FROM newsletter_issues
+        ORDER BY published_at DESC
+        LIMIT $1
+        "#,
+        RECENT_POSTS,
+    );
+
+    let rows = query.fetch_all(&**connection_pool).await?;
+
+    let newsletter_posts = rows
+        .into_iter()
+        .map(|row| NewsletterPost {
+            id: row.newsletter_issue_id,
+            title: row.title,
+            text_content: row.text_content,
+            html_content: row.html_content,
+            published_at: row.published_at,
+        })
+        .collect();
+
+    Ok(newsletter_posts)
 }
