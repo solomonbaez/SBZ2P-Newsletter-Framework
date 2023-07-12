@@ -148,7 +148,7 @@ pub async fn get_subscribe(
                         <ul>
                             <li><a href="/home">Home</a></li>
                             <li><a href="/blog">Blog</a></li>
-                            <li><a href="/subscribe">Subscribe</a></li>
+                            <li><a href="/subscriptions">Subscribe</a></li>
                             <li><a href="/contact">Contact</a></li>
                         </ul>
                     </nav>

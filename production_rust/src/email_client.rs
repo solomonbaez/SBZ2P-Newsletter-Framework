@@ -34,7 +34,9 @@ impl EmailClient {
         html_content: &str,
         text_content: &str,
     ) -> Result<(), reqwest::Error> {
-        let url = format!("{}/email", self.base_url);
+        let base_url = reqwest::Url::parse(self.base_url.as_str())
+            .unwrap_or_else(|_| panic!("Failed to construct url: Invalid {}.", self.base_url));
+        let url = reqwest::Url::join(&base_url, "/email").unwrap();
 
         let body = SendEmailRequest {
             from: self.sender.as_ref(),
@@ -45,7 +47,7 @@ impl EmailClient {
         };
 
         self.http_client
-            .post(&url)
+            .post(url)
             .header("X-Postmark-Server-Token", self.auth_token.expose_secret())
             .json(&body)
             .send()
