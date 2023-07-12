@@ -41,7 +41,7 @@ pub struct TestApp {
 impl TestApp {
     pub async fn get_subscribe(&self) -> reqwest::Response {
         self.api_client
-            .get(&format!("{}/subscribe", &self.address))
+            .get(&format!("{}/subscriptions", &self.address))
             .send()
             .await
             .expect("Failed to execute request.")

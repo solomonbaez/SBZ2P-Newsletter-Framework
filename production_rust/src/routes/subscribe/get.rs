@@ -163,12 +163,19 @@ pub async fn get_subscribe(
                         <div class="center-container">
                             <div class="form-container">
                                 {msg_html}
-                                <form action="/subcriptions" method="post">
-                                    <label>Email:<br>
-                                        <input
+                                <form action="/subscriptions" method="post">
+                                    <label for="email">Email:<br>
+                                        <input id="email"
+                                            name="email"
                                             type="text"
                                             placeholder="enter your email"
-                                            name="email"
+                                        >
+                                    </label>
+                                    <label for"name">Name:<br>
+                                        <input id="name"
+                                            name="name"
+                                            type="text"
+                                            placeholder="enter your name"
                                         >
                                     </label>
                                     <button type="submit">Subscribe</button>

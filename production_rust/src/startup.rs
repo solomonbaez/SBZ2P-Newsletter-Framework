@@ -98,7 +98,7 @@ async fn run(
             ))
             .wrap(TracingLogger::default())
             .route("/health_check", web::get().to(health_check))
-            .route("/subscribe", web::get().to(get_subscribe))
+            .route("/subscriptions", web::get().to(get_subscribe))
             .route("/subscriptions", web::post().to(subscribe))
             .route("/subscriptions/confirm", web::get().to(confirm))
             .route("/home", web::get().to(home))

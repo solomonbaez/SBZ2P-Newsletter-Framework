@@ -1,14 +1,15 @@
 application:
   port: 8000
+  host: 0.0.0.0
   hmac_secret: "they-werent-men-they-were-wolves-a-fully-enslaved-process-at-the-end-of-time-comfort" 
 database:
-  host: "localhost"
+  host: "127.0.0.1"
   port: 5432
   username: "postgres"
   password: "ultima"
   database_name: "newsletter"
 email_client:
-  base_url: "localhost"
+  base_url: "http://127.0.0.1"
   sender_email: "test@gmail.com"
   auth_token: "gloria-invigilata"
   timeout_milliseconds: 10000
