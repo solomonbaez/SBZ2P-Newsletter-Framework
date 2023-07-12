@@ -8,8 +8,9 @@ database:
   username: "postgres"
   password: "ultima"
   database_name: "newsletter"
+  require_ssl: false
 email_client:
-  base_url: "http://127.0.0.1"
+  base_url: "locahost"
   sender_email: "test@gmail.com"
   auth_token: "gloria-invigilata"
   timeout_milliseconds: 10000

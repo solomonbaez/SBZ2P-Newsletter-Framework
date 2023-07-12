@@ -31,20 +31,17 @@ impl EmailClient {
         &self,
         recipient: &SubscriberEmail,
         subject: &str,
-        html_body: &str,
-        text_body: &str,
+        html_content: &str,
+        text_content: &str,
     ) -> Result<(), reqwest::Error> {
-        // let base_url =
-        //     reqwest::Url::parse(self.base_url.as_str()).expect("Failed to construct url: Invalid.");
-        // let url = reqwest::Url::join(&base_url, "/email").unwrap();
         let url = format!("{}/email", self.base_url);
 
         let body = SendEmailRequest {
             from: self.sender.as_ref(),
             to: recipient.as_ref(),
             subject,
-            html_body,
-            text_body,
+            html_body: html_content,
+            text_body: text_content,
         };
 
         self.http_client
