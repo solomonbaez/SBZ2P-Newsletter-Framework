@@ -283,6 +283,50 @@
     },
     "query": "SELECT subscriber_id FROM subscription_tokens WHERE subscription_token = $1"
   },
+  "d061c22e56659cd03cc350f4da39ffc712fd713287ce10a8f08a25264b2b6101": {
+    "describe": {
+      "columns": [
+        {
+          "name": "newsletter_issue_id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "title",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "text_content",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "html_content",
+          "ordinal": 3,
+          "type_info": "Text"
+        },
+        {
+          "name": "published_at",
+          "ordinal": 4,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Int8"
+        ]
+      }
+    },
+    "query": "\n        SELECT newsletter_issue_id, title, text_content, html_content, published_at\n        FROM newsletter_issues\n        ORDER BY published_at DESC\n        LIMIT $1\n        "
+  },
   "db3b2400722d6d1e15078aad05dd6b38f3c4722de998621071169e4d4a7fd041": {
     "describe": {
       "columns": [],

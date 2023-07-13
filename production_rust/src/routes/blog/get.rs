@@ -1,3 +1,4 @@
+use crate::utils::e500;
 use actix_web::http::header::ContentType;
 use actix_web::{web, HttpResponse};
 use actix_web_flash_messages::IncomingFlashMessages;
@@ -6,16 +7,37 @@ use std::fmt::Write;
 // use chrono::NaiveDateTime;
 use uuid::Uuid;
 
-pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse, actix_web::Error> {
+pub async fn blog(
+    connection_pool: web::Data<PgPool>,
+    flash_messages: IncomingFlashMessages,
+) -> Result<HttpResponse, actix_web::Error> {
     let mut msg_html = String::new();
     for m in flash_messages.iter() {
         writeln!(msg_html, "<p><i>{}</i></p>", m.content()).unwrap();
     }
 
-    Ok(HttpResponse::Ok()
-        .content_type(ContentType::html())
-        .body(format!(
-            r#"
+    let newsletter_posts = get_recent_newsletters(connection_pool)
+        .await
+        .map_err(e500)?;
+
+    let blog_posts_html = newsletter_posts
+        .iter()
+        .map(|blog_post| {
+            format!(
+                r#"
+                <div class="blog-post">
+                    <h3>{}</h3>
+                    <p>{}...</p>
+                    <a href="/blog/post-{}"><button type="button">Read More</button></a>
+                </div>
+                "#,
+                blog_post.title, blog_post.text_content, blog_post.html_content
+            )
+        })
+        .collect::<String>();
+
+    let blog_html = format!(
+        r#"
             <!DOCTYPE html>
             <html lang="en">
             <head>
@@ -142,16 +164,7 @@ pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                         {msg_html}
                     </section>
                     <section>
-                        <div class="blog-post">
-                            <h3>Blog Post Title</h3>
-                            <p>Blog content summary.</p>
-                            <a href="/blog/post-slub"><button type="button">Read More</button></a>
-                        </div>
-                        <div class="blog-post">
-                            <h3>Blog Post Title</h3>
-                            <p>Blog content summary.</p>
-                            <a href="/blog/post-slub"><button type="button">Read More</button></a>
-                        </div>
+                        {blog_posts_html}
                     </section>
                 </main>
             
@@ -161,8 +174,14 @@ pub async fn blog(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                 </footer>
             </body>
             </html>
-            "#
-        )))
+            "#,
+        msg_html = msg_html,
+        blog_posts_html = blog_posts_html
+    );
+
+    Ok(HttpResponse::Ok()
+        .content_type(ContentType::html())
+        .body(blog_html))
 }
 
 #[allow(dead_code)]
