@@ -108,8 +108,10 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                     }}
 
                     .bottom-container {{
-                        background-color: #111;
-                        padding: 50px 0px 20px;
+                        background-color: #222;
+                        position: relative;
+                        padding-top: 25px;
+                        padding-bottom: 55px;
                     }}
 
                     .profile-container {{
@@ -139,6 +141,14 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                         width: 50%;
                         float: right;
                         margin-right: 30px;
+                    }}
+
+                    .gif-container {{
+                        object-position: center top;
+                        width: 50%;
+                        height: 90%;
+                        float: right;
+                        margin-right: 30px
                     }}
 
                     nav ul {{
@@ -204,18 +214,21 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                         <p><strong style="color: #007bff;">2019-2023:</strong> PediaNourish LLC</p>
                         <p><strong style="color: #007bff;">2018-2023:</strong> Higgins/Dallas Lab, OSU</p>
                         <p><strong style="color: #007bff;">2018-2018:</strong> Higgins Lab, OSU</p>
+                        <img class="python-img" src="https://img1.wallspic.com/previews/4/9/3/3/6/163394/163394-python_programer-python-programming_language-standing-source_code-x750.jpg" alt="python-img">
                     </div>
                     <hr>
-                    <h2>My Skills</h2>
-                    <div class="skill-row">
-                        <img class="python-img" src="https://i.giphy.com/media/E4kjYvAnTjh45ML3TO/giphy.webp" alt="python-img">
-                        <h3><strong>Programming</strong>: </h3>
-                        <p>Python; Rust; PostgresSQL; MySQL</p>
-                        <br>
-                        <h3><strong>Skills</strong>: </h3>
-                        <p>Data Science/Engineering</p>
-                        <p>Engineering Product Design</p>
-                        <p>Engineering Product Commercialization</p>
+                    <div class="bottom-container">
+                        <h2>My Skills</h2>
+                        <div class="skill-row">
+                            <img class="gif-container" src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/fe36cc42774743.57ee5f329fae6.gif" alt="ferris-gif">
+                            <h3><strong>Programming</strong>: </h3>
+                            <p>Python; Rust; PostgresSQL; MySQL</p>
+                            <br>
+                            <h3><strong>Skills</strong>: </h3>
+                            <p>Data Science/Engineering</p>
+                            <p>Engineering Product Design</p>
+                            <p>Engineering Product Commercialization</p>
+                        </div>
                     </div>
                 </div>
             </div>
