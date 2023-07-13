@@ -1,13 +1,15 @@
 use crate::utils::e500;
 use actix_web::http::header::ContentType;
-use actix_web::{web, HttpResponse};
+use actix_web::{web, HttpRequest, HttpResponse};
 use actix_web_flash_messages::IncomingFlashMessages;
+use actix_web_lab::extract::Path;
 use sqlx::PgPool;
 use std::fmt::Write;
 // use chrono::NaiveDateTime;
 use uuid::Uuid;
 
 pub async fn blog(
+    request: HttpRequest,
     connection_pool: web::Data<PgPool>,
     flash_messages: IncomingFlashMessages,
 ) -> Result<HttpResponse, actix_web::Error> {
@@ -20,7 +22,7 @@ pub async fn blog(
         .await
         .map_err(e500)?;
 
-    let blog_posts_html = newsletter_posts
+    let blog_posts_html: Vec<String> = newsletter_posts
         .iter()
         .map(|blog_post| {
             format!(
@@ -28,13 +30,19 @@ pub async fn blog(
                 <div class="blog-post">
                     <h3>{}</h3>
                     <p>{}...</p>
-                    <a href="/blog/post-{}"><button type="button">Read More</button></a>
+                    <a href="{}"
+                        <button type="button">Read More</button>
+                    </a>
                 </div>
                 "#,
-                blog_post.title, blog_post.text_content, blog_post.html_content
+                blog_post.title,
+                blog_post.text_content,
+                request
+                    .url_for("blog_post", [&blog_post.id.to_string()])
+                    .expect("Failed to generate blog post URL."),
             )
         })
-        .collect::<String>();
+        .collect();
 
     let blog_html = format!(
         r#"
@@ -176,7 +184,7 @@ pub async fn blog(
             </html>
             "#,
         msg_html = msg_html,
-        blog_posts_html = blog_posts_html
+        blog_posts_html = blog_posts_html.join("\n"),
     );
 
     Ok(HttpResponse::Ok()
@@ -191,6 +199,22 @@ pub struct NewsletterPost {
     pub text_content: String,
     pub html_content: String,
     pub published_at: String,
+}
+
+pub async fn blog_post_handler(
+    Path(newsletter_id): Path<Uuid>,
+    connection_pool: web::Data<PgPool>,
+) -> Result<HttpResponse, actix_web::Error> {
+    let newsletter_post = get_newsletter_post_by_id(connection_pool, newsletter_id)
+        .await
+        .map_err(e500)?;
+
+    let html_content = format!(
+        "<h1>{}</h1><p>{}</p>",
+        newsletter_post.title, newsletter_post.html_content
+    );
+
+    Ok(HttpResponse::Ok().body(html_content))
 }
 
 pub async fn get_recent_newsletters(
@@ -222,4 +246,29 @@ pub async fn get_recent_newsletters(
         .collect();
 
     Ok(newsletter_posts)
+}
+
+pub async fn get_newsletter_post_by_id(
+    connection_pool: web::Data<PgPool>,
+    newsletter_id: Uuid,
+) -> Result<NewsletterPost, sqlx::Error> {
+    let query = sqlx::query!(
+        r#"
+        SELECT newsletter_issue_id, title, text_content, html_content, published_at
+        FROM newsletter_issues
+        WHERE newsletter_issue_id = $1
+        "#,
+        newsletter_id
+    );
+
+    let post = query.fetch_one(&**connection_pool).await?;
+    let newsletter_post = NewsletterPost {
+        id: post.newsletter_issue_id,
+        title: post.title,
+        text_content: post.text_content,
+        html_content: post.html_content,
+        published_at: post.published_at,
+    };
+
+    Ok(newsletter_post)
 }

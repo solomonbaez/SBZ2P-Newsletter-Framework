@@ -366,6 +366,50 @@
     },
     "query": "\n        UPDATE idempotency\n        SET \n            response_status_code = $3,\n            response_headers = $4,\n            response_body = $5\n        WHERE \n            user_id = $1 \n            AND idempotency_key = $2\n        "
   },
+  "dd0b4bf079b4f65ecbfdf224484171b5a640455c5d318d3a72ab018fe5766881": {
+    "describe": {
+      "columns": [
+        {
+          "name": "newsletter_issue_id",
+          "ordinal": 0,
+          "type_info": "Uuid"
+        },
+        {
+          "name": "title",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "text_content",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "html_content",
+          "ordinal": 3,
+          "type_info": "Text"
+        },
+        {
+          "name": "published_at",
+          "ordinal": 4,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      }
+    },
+    "query": "\n        SELECT newsletter_issue_id, title, text_content, html_content, published_at\n        FROM newsletter_issues\n        WHERE newsletter_issue_id = $1\n        "
+  },
   "e6822c9e162eabc20338cc27d51a8e80578803ec1589c234d93c3919d14a96a6": {
     "describe": {
       "columns": [],

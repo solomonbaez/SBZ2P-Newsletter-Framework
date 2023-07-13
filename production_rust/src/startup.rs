@@ -2,9 +2,9 @@ use crate::authentication::reject_anonymous_users;
 use crate::configuration::{DatabaseSettings, Settings};
 use crate::email_client::EmailClient;
 use crate::routes::{
-    admin_dashboard, blog, change_key_state, change_password, change_password_form, confirm,
-    contact_me, get_subscribe, health_check, home, log_out, login, login_form,
-    manage_settings_form, new_newsletter_form, publish_newsletter, subscribe,
+    admin_dashboard, blog, blog_post_handler, change_key_state, change_password,
+    change_password_form, confirm, contact_me, get_subscribe, health_check, home, log_out, login,
+    login_form, manage_settings_form, new_newsletter_form, publish_newsletter, subscribe,
 };
 use actix_session::storage::RedisSessionStore;
 use actix_session::SessionMiddleware;
@@ -103,6 +103,11 @@ async fn run(
             .route("/subscriptions/confirm", web::get().to(confirm))
             .route("/home", web::get().to(home))
             .route("/blog", web::get().to(blog))
+            .service(
+                web::resource("/blog/{newsletter_id}")
+                    .route(web::get().to(blog_post_handler))
+                    .name("blog_post"),
+            )
             .route("/contact", web::get().to(contact_me))
             .route("/login", web::get().to(login_form))
             .route("/login", web::post().to(login))
