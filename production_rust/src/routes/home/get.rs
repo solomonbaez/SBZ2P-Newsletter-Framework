@@ -101,14 +101,14 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                     }}
 
                     .top-container {{
-                        background-color: #222;
+                        background-color: #232323;
                         position: relative;
                         padding-top: 25px;
                         padding-bottom: 55px;
                     }}
 
                     .bottom-container {{
-                        background-color: #222;
+                        background-color: #232323;
                         position: relative;
                         padding-top: 25px;
                         padding-bottom: 55px;
