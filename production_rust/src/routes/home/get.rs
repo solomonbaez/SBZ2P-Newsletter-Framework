@@ -28,6 +28,12 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                         color: #fff;
                     }}
 
+                    section {{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }}
+
                     hr {{
                         border: dotted #444 6px;
                         border-bottom: none;
@@ -155,6 +161,7 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                     nav ul li a:hover {{
                         color: #007bff;
                     }}
+                    
 
                     @keyframes blink-animation {{
                         0% {{ opacity: 1; }}
@@ -249,6 +256,12 @@ pub async fn contact_me(
                         background-color: #111;
                         color: #fff;
                     }}
+
+                    section {{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }}
                     
                     hr {{
                         border: dotted #444 6px;
@@ -305,21 +318,40 @@ pub async fn contact_me(
                     
                     .link-container {{
                         margin-bottom: 20px;
-                        padding: 20px;
+                        padding: 20px 100px;
                         background: #222;
                         border-radius: 5px;
+                        text-align: center;
+                        max-width: 800px;
+                        margin: 0 auto;
+                        overflow-wrap: break-word;
+                        width: calc(100% - 40px);
+                        margin-left: auto;
+                        margin-right: auto;
                     }}
-                    
+    
+                    .link-container::before {{
+                        content: "";
+                        width: calc(50vw - 350px);
+                        min-width: 20px;
+                    }}
+    
+                    .link-container::after {{
+                        content: "";
+                        width: calc(50vw - 350px);
+                        min-width: 20px;
+                    }}
+        
                     .link-container h3 {{
-                        font-size: 24px;
+                        font-size: 2.25rem;
                         margin-bottom: 10px;
                         color: #fff;
                     }}
-                    
+        
                     .link-container p {{
                         margin-bottom: 10px;
                     }}
-                    
+
                     button[type="button"] {{
                         display: inline-block;
                         padding: 8px 12px;
@@ -338,6 +370,30 @@ pub async fn contact_me(
             
                     button:hover {{
                         background-color: #003d5a;
+                    }}
+                    
+                    h1::after {{
+                        content: "_";
+                        display: inline-block;
+                        width: 6px;
+                        height: 40px;
+                        background-color: #222;
+                        animation: blink-animation 1.5s infinite;
+                    }}
+
+                    h2::after {{
+                        content: "_";
+                        display: inline-block;
+                        width:6px;
+                        height: 40px;
+                        background-color: #111;
+                        animation: blink-animation 1.5s infinite;
+                    }}
+                    
+                    @keyframes blink-animation {{
+                        0% {{ opacity: 1; }}
+                        50% {{ opacity: 0; }}
+                        100% {{ opacity: 1; }}
                     }}
                 </style>
             </head>

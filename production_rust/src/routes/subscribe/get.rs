@@ -29,6 +29,12 @@ pub async fn get_subscribe(
                         background-color: #111;
                         color: #fff;
                     }}
+
+                    section {{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }}
                     
                     hr {{
                         border: dotted #444 6px;
@@ -83,37 +89,82 @@ pub async fn get_subscribe(
                         color: #007bff;
                     }}
             
-                    .center-container {{
+                    .link-container {{
                         display: flex;
                         justify-content: center;
-                        align-items: flex-start;
-                    }}
-            
-                    .form-container {{
-                        background-color: #222;
-                        padding: 20px;
+                        align-items: center;
+                        margin-bottom: 20px;
+                        padding: 20px 100px;
+                        background: #222;
                         border-radius: 5px;
-                        max-width: 400px;
-                        margin-top: 50px;
-                        margin-bottom: 50px;
+                        text-align: center;
+                        max-width: 800px;
+                        margin: 0 auto;
+                        overflow-wrap: break-word;
+                        width: calc(100% - 40px);
+                        margin-left: auto;
+                        margin-right: auto;
                     }}
-            
-                    form {{
-                        display: flex;
-                        flex-direction: column;
+    
+                    .link-container::before {{
+                        content: "";
+                        display: inline-block;
+                        width: calc(50vw - 350px);
+                        min-width: 20px;
+                    }}
+    
+                    .link-container::after {{
+                        content: "";
+                        display: inline-block;
+                        width: calc(50vw - 350px);
+                        min-width: 20px;
+                    }}
+        
+                    .link-container h3 {{
+                        font-size: 2.25rem;
+                        margin-bottom: 10px;
+                        color: #fff;
+                    }}
+        
+                    .link-container p {{
+                        margin-bottom: 10px;
                     }}
             
                     label {{
                         margin-bottom: 10px;
                         color: #fff;
                     }}
-            
+
+                    .form-container {{
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 20px;
+                        padding: 20px;
+                        border-radius: 5px;
+                        max-width: 400px;
+                        margin-top: 20px;
+                        margin-bottom: 50px;
+                    }}
+
+                    .input-column {{
+                        display: flex;
+                        flex-direction: column;
+                    }}
+
+                    .input-column label {{
+                        margin-bottom: 5px
+                    }}
+
+                    .input-column input {{
+                        width: 100%
+                    }}
+
                     input[type="text"],
                     textarea {{
                         box-sizing: border-box;
                         display: flex;
                         justify-content: center;
-                        height: 20px;
+                        height: 50px;
                         width: 200px;
                         padding: 5px;
                         border: 1px solid #ccc;
@@ -121,15 +172,15 @@ pub async fn get_subscribe(
                         margin-bottom: 5px;
                     }}
             
-                    button[type="submit"],
-                    button[type="button"] {{
+                    button[type="submit"] {{
+                        grid-column: 1 / span 2;
                         box-sizing: border-box;
                         display: flex;
                         justify-content: center;
                         padding: 10px 20px;
                         border: 1px;
                         border-radius: 3px;
-                        width: 200px;
+                        width: 420px;
                         cursor: pointer;
                         background-color: #007bff;
                         color: #fff;
@@ -139,6 +190,30 @@ pub async fn get_subscribe(
             
                     button:hover {{
                         background-color: #003d5a;
+                    }}
+                    
+                    h1::after {{
+                        content: "_";
+                        display: inline-block;
+                        width: 6px;
+                        height: 40px;
+                        background-color: #222;
+                        animation: blink-animation 1.5s infinite;
+                    }}
+
+                    h2::after {{
+                        content: "_";
+                        display: inline-block;
+                        width:6px;
+                        height: 40px;
+                        background-color: #111;
+                        animation: blink-animation 1.5s infinite;
+                    }}
+                    
+                    @keyframes blink-animation {{
+                        0% {{ opacity: 1; }}
+                        50% {{ opacity: 0; }}
+                        100% {{ opacity: 1; }}
                     }}
                 </style>
             </head>
@@ -160,26 +235,30 @@ pub async fn get_subscribe(
                         {msg_html}
                     </section>
                     <section>
-                        <div class="center-container">
-                            <div class="form-container">
+                        <div class="link-container">
                                 {msg_html}
-                                <form action="/subscriptions" method="post">
-                                    <label for="email">Email:<br>
-                                        <input id="email"
-                                            name="email"
-                                            type="text"
-                                            placeholder="enter your email"
-                                        >
-                                    </label>
-                                    <label for"name">Name:<br>
+                                <form action="/subscriptions" method="post" class="form-container">
+                                    <div class="input-column">
+                                        <label for"name"><h3>Name:</h3><br>
                                         <input id="name"
                                             name="name"
                                             type="text"
                                             placeholder="enter your name"
                                         >
-                                    </label>
+                                        </label>
+                                    </div>
+                                    <div class="input-column">
+                                        <label for="email"><h3>Email:</h3><br>
+                                            <input id="email"
+                                                name="email"
+                                                type="text"
+                                                placeholder="enter your email"
+                                            >
+                                        </label>
+                                    </div>
                                     <button type="submit">Subscribe</button>
                                 </form>
+                                </div>
                             </div>
                         </div>
                     </section>
