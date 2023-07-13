@@ -128,27 +128,39 @@ pub async fn change_password_form(
         {msg_html}
         <form action="/admin/password" method="post">
             <div class="input-group">
-                <label for="current-password">Current Password:</label>
+                <label for="current_password">Current Password:</label>
                 <input type="password" 
-                    id="current-password"
-                    name="current-password"
+                    id="current_password"
+                    name="current_password"
                     placeholder="Enter your current password"
                 >
                 <button type="button" 
                     id="current-password-toggle" 
-                    onclick="togglePasswordVisibility('current-password')"
+                    onclick="togglePasswordVisibility('current_password')"
                 >Show</button>
             </div>
             <div class="input-group">
-                <label for="new-password">New Password:</label>
+                <label for="new_password">New Password:</label>
                 <input type="password" 
-                    id="new-password" 
-                    name="new-password" 
+                    id="new_password" 
+                    name="new_password" 
                     placeholder="Enter your new password"
                 >
                 <button type="button" 
                     id="new-password-toggle" 
-                    onclick="togglePasswordVisibility('new-password')"
+                    onclick="togglePasswordVisibility('new_password')"
+                >Show</button>
+            </div>
+            <div class="input-group">
+                <label for="new_password_check">Confirm Password:</label>
+                <input type="password" 
+                    id="new_password_check" 
+                    name="new_password_check" 
+                    placeholder="Confirm your new password"
+                >
+                <button type="button" 
+                    id="new-password-check-toggle" 
+                    onclick="togglePasswordVisibility('new_password_check')"
                 >Show</button>
             </div>
             <div class="button-container">    

@@ -232,11 +232,12 @@ pub async fn get_subscribe(
                 <main>
                     <section>
                         <h2>Subscribe</h2>
+                    </section>
+                    <section>
                         {msg_html}
                     </section>
                     <section>
                         <div class="link-container">
-                                {msg_html}
                                 <form action="/subscriptions" method="post" class="form-container">
                                     <div class="input-column">
                                         <label for"name"><h3>Name:</h3><br>

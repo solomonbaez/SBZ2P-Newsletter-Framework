@@ -59,15 +59,6 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                         animation: blink-animation 1.5s infinite;
                     }}
 
-                    h2::after {{
-                        content: "_";
-                        display: inline-block;
-                        width:6px;
-                        height: 40px;
-                        background-color: #111;
-                        animation: blink-animation 1.5s infinite;
-                    }}
-
                     h3 {{
                         color: #007bff;
                         font-family: "Montserrat", sans-serif;
@@ -144,11 +135,27 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                     }}
 
                     .gif-container {{
-                        object-position: center top;
                         width: 50%;
                         height: 90%;
                         float: right;
-                        margin-right: 30px
+                        margin-right: 30px;
+                        top: -50px;
+                        position: relative;
+                    }}
+                    
+                    .gif-container img {{
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }}
+                    
+                    .gif-overlay {{
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 20px; /* Adjust the height as needed */
+                        background-color: #232323; /* Replace with the desired background color */
                     }}
 
                     nav ul {{
@@ -199,7 +206,6 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
             </div>
 
             <div class="middle-container">
-                {msg_html}
                 <div class="profile-container">
                     <h2>Hello</h2>
                     <p>I am a bioengineer and software developer with four years of research
@@ -210,17 +216,20 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
                 <hr>
                 <div class="skills">
                     <h2>My Experience</h2>
+                    {msg_html}
                     <div class="experience-row">
                         <p><strong style="color: #007bff;">2019-2023:</strong> PediaNourish LLC</p>
                         <p><strong style="color: #007bff;">2018-2023:</strong> Higgins/Dallas Lab, OSU</p>
                         <p><strong style="color: #007bff;">2018-2018:</strong> Higgins Lab, OSU</p>
-                        <img class="python-img" src="https://img1.wallspic.com/previews/4/9/3/3/6/163394/163394-python_programer-python-programming_language-standing-source_code-x750.jpg" alt="python-img">
                     </div>
                     <hr>
                     <div class="bottom-container">
                         <h2>My Skills</h2>
                         <div class="skill-row">
-                            <img class="gif-container" src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/fe36cc42774743.57ee5f329fae6.gif" alt="ferris-gif">
+                            <div class="gif-container">
+                                <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/fe36cc42774743.57ee5f329fae6.gif" alt="ferris-gif">
+                                <div class="gif-overlay"></div>
+                            </div>
                             <h3><strong>Programming</strong>: </h3>
                             <p>Python; Rust; PostgresSQL; MySQL</p>
                             <br>
@@ -234,6 +243,7 @@ pub async fn home(flash_messages: IncomingFlashMessages) -> Result<HttpResponse,
             </div>
 
             <footer>
+                <p>Rustacean from Refracted Color on Behance</p>
                 <p>&copy; 2023 Solomon Baez</p>
                 <p><a href="/login">admin login</a></p>
             </footer>
@@ -425,6 +435,8 @@ pub async fn contact_me(
                 <main>
                     <section>
                         <h2>Contact Me</h2>
+                    </section>
+                    <section>
                         {msg_html}
                     </section>
                     <section>

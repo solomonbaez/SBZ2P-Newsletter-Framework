@@ -214,6 +214,8 @@ pub async fn blog(
                 <main>
                     <section>
                         <h2>Welcome</h2>
+                    </section>
+                    <section>
                         {msg_html}
                     </section>
                     <section>
