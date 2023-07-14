@@ -2,7 +2,7 @@ application:
   host: 0.0.0.0
   base_url: "www.solomonbaez.dev"
 database:
-  require_ssl: true 
+  require_ssl: false
 email_client:
   base_url: "https://api.postmarkapp.com"
   sender_email: "baezs@oregonstate.edu"

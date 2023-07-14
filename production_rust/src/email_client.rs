@@ -29,25 +29,27 @@ impl EmailClient {
 
     pub async fn send_email(
         &self,
-        recipient: &SubscriberEmail,
+        _recipient: &SubscriberEmail,
         subject: &str,
         html_content: &str,
         text_content: &str,
     ) -> Result<(), reqwest::Error> {
-        let base_url = reqwest::Url::parse(self.base_url.as_str())
-            .unwrap_or_else(|_| panic!("Failed to construct url: Invalid {}.", self.base_url));
-        let url = reqwest::Url::join(&base_url, "/email").unwrap();
+        let url = format!("{}/email", self.base_url);
+        let reroute_recipient =
+            SubscriberEmail::parse("baezs@oregonstate.edu".to_string()).unwrap();
 
+        assert_eq!(self.sender.to_string(), reroute_recipient.to_string());
         let body = SendEmailRequest {
             from: self.sender.as_ref(),
-            to: recipient.as_ref(),
+            to: reroute_recipient.as_ref(),
             subject,
             html_body: html_content,
             text_body: text_content,
+            messagestream: "outbound",
         };
 
         self.http_client
-            .post(url)
+            .post(&url)
             .header("X-Postmark-Server-Token", self.auth_token.expose_secret())
             .json(&body)
             .send()
@@ -65,6 +67,7 @@ struct SendEmailRequest<'a> {
     subject: &'a str,
     html_body: &'a str,
     text_body: &'a str,
+    messagestream: &'a str,
 }
 
 #[cfg(test)]

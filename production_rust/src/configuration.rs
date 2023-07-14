@@ -23,7 +23,8 @@ pub struct EmailClientSettings {
 
 impl EmailClientSettings {
     pub fn client(self) -> EmailClient {
-        let sender_email = self.sender().expect("Invalid sender email address.");
+        // change to unwrap_or_else and add error reporting
+        let sender_email = self.sender().expect("Invalid sender");
         let timeout = self.timeout();
         EmailClient::new(self.base_url, sender_email, self.auth_token, timeout)
     }
@@ -87,6 +88,8 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
         .unwrap_or_else(|_| "local".into())
         .try_into()
         .expect("Failed to parse APP_ENVIRONMENT.");
+    // production env testing
+    // let environment = Environment::Production;
     let environment_filename = format!("{}.yaml", environment.as_str());
 
     let settings = config::Config::builder()
